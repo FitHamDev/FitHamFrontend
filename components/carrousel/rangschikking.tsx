@@ -9,7 +9,7 @@ const Rangschikking: React.FC<Props> = ({ rankschikking }) => {
   console.log('Rangschikking data:', rankschikking);
   // If no data, show a default row. If data, show all teams with punten 0 and volgorde as 'ex aequo'.
   const hasData = rankschikking && rankschikking.length > 0;
-  return (
+  return hasData ? (
     <table>
       <thead>
         <tr>
@@ -19,23 +19,17 @@ const Rangschikking: React.FC<Props> = ({ rankschikking }) => {
         </tr>
       </thead>
       <tbody>
-        {hasData ? (
-          rankschikking.map((team, index) => (
-            <tr key={index}>
-              <td>ex aequo</td>
-              <td>{team.ploegnaam}</td>
-              <td>0</td>
-            </tr>
-          ))
-        ) : (
-          <tr>
-            <td>0</td>
-            <td>-</td>
+        {rankschikking.map((team, index) => (
+          <tr key={index}>
+            <td></td>
+            <td>{team.ploegnaam}</td>
             <td>0</td>
           </tr>
-        )}
+        ))}
       </tbody>
     </table>
+  ) : (
+    <p>Geen rangschikking beschikbaar.</p>
   );
 };
 
