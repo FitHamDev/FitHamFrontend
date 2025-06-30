@@ -29,7 +29,7 @@ const Rangschikking: React.FC<Props> = ({ rankschikking }) => {
           ))
         ) : (
           <tr>
-            <td>ex aequo</td>
+            <td>0</td>
             <td>-</td>
             <td>0</td>
           </tr>
