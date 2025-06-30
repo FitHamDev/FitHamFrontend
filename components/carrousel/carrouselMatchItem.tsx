@@ -1,6 +1,7 @@
 import React from "react";
-import { Wedstrijd } from "../../utils/types";
+import { Wedstrijd, Rangschikking } from "../../utils/types";
 import { useRouter } from 'next/router';
+import RangschikkingTable from "./rangschikking";
 
 // Helper to parse dd/mm/yyyy to Date
 function parseDDMMYYYY(dateStr: string) {
@@ -10,11 +11,13 @@ function parseDDMMYYYY(dateStr: string) {
 
 type Props = {
   wedstrijd: Wedstrijd;
+  rangschikking: Rangschikking[];
 };
 
-const CarrouselMatchItem: React.FC<Props> = ({ wedstrijd }) => { 
+const CarrouselMatchItem: React.FC<Props> = ({ wedstrijd, rangschikking }) => { 
   const parsedDate = parseDDMMYYYY(wedstrijd.datum);
   const { basePath } = useRouter();
+
   return (
     <div className="relative h-[27rem] w-[55%] flex flex-col items-center justify-center rounded-lg shadow-lg overflow-hidden bg-white/70">
       <div className="absolute inset-0 bg-gradient-to-br from-blue-300/40 via-blue-500/60 to-blue-900/80 z-0"></div>
@@ -27,7 +30,12 @@ const CarrouselMatchItem: React.FC<Props> = ({ wedstrijd }) => {
         <p className="text-[4rem] mt-[1rem] text-white font-bold drop-shadow-lg w-full">{wedstrijd.uitslag && wedstrijd.uitslag.trim() !== "" ? wedstrijd.uitslag : "0 - 0"}</p>
         <p className="text-[1.5rem] mt-[3rem] text-white drop-shadow-lg w-full">{wedstrijd.reeksnaam && wedstrijd.reeksnaam.trim() !== "" ? wedstrijd.reeksnaam : wedstrijd.reeks}</p>
         <p className="text-[1.5rem] mt-[1rem] text-white drop-shadow-lg w-full">{parsedDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}, {wedstrijd.aanvangsuur}</p>
+        <div className="mt-4">
+          <RangschikkingTable rankschikking={rangschikking} />
+        </div>
       </div>
+
+      
     </div>
   );
 };

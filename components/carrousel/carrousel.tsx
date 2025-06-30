@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
 import { useRouter } from 'next/router';
 import CarrouselMatchItem from "./carrouselMatchItem";
-import { Wedstrijd } from "../../utils/types";
+import { Rangschikking, Wedstrijd } from "../../utils/types";
 import matchService from "../../service/matchService";
 import CarrouselSponserItem from "./carrouselSponserItem";
+import rankschikkingService from "../../service/rangschikkingService";
 
 
 
 const Carrousel: React.FC = ({}) => {
   const [wedstrijden, setWedstrijden] = useState<Wedstrijd[]>([]);
+  const [rangsсhikking, setRangschikking] = useState<Rangschikking[]>([]);
+  const [currentReeks, setCurrentReeks] = useState<string | null>(null);
   const [index, setIndex] = useState(0);
   const { basePath } = useRouter();
 
@@ -67,8 +70,7 @@ const Carrousel: React.FC = ({}) => {
     });
   };
 
-  useEffect(() => {
-    const fetchWedstrijden = async () => {
+  const fetchWedstrijden = async () => {
       try {
         const response = await matchService.getWedstrijdenByStamnummer("L-0759");
         const data = await response.json();
@@ -81,8 +83,19 @@ const Carrousel: React.FC = ({}) => {
         console.error("Error fetching wedstrijden:", error);
       }
     };
-    fetchWedstrijden();
-  }, []);
+
+  const fetchRangschikking = async (reeks: string) => {
+    try {
+      const response = await rankschikkingService.getRangschikkingByReeks(reeks)
+      const data = await response.json();
+
+      const rangschikkingData =( data.data || []).slice();
+
+      setRangschikking(rangschikkingData);
+    } catch (error) {
+      console.error("Error fetching rangschikking:", error);
+    }
+  };
 
   // continiously loop through matches and sponsors
   const totalItems = Math.max(wedstrijden.length, sponsorImages.length) * 2;
@@ -101,6 +114,22 @@ const Carrousel: React.FC = ({}) => {
   }).filter((item): item is { type: string; data: any } => item !== null && item !== undefined);
 
   useEffect(() => {
+    fetchWedstrijden();
+  }, []);
+
+  // Fetch ranking when the current match changes
+  useEffect(() => {
+    if (carouselItems.length > 0 && carouselItems[index]?.type === 'match') {
+      const match = carouselItems[index].data as Wedstrijd;
+      if (match.reeks && match.reeks !== currentReeks) {
+        setCurrentReeks(match.reeks);
+        fetchRangschikking(match.reeks);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [index, carouselItems]);
+
+  useEffect(() => {
     const interval = setInterval(() => {
       setIndex((prevIndex) => (prevIndex + 1) % (carouselItems.length || 1));
     }, 6000);
@@ -112,7 +141,7 @@ const Carrousel: React.FC = ({}) => {
       {carouselItems.length > 0 && carouselItems[index] != null && (
         <div className="m-auto w-full h-full flex justify-center items-center">
           {carouselItems[index]?.type === 'match' && typeof carouselItems[index]?.data !== 'string' ? (
-            <CarrouselMatchItem wedstrijd={carouselItems[index]?.data as Wedstrijd} />
+            <CarrouselMatchItem wedstrijd={carouselItems[index]?.data as Wedstrijd} rangschikking={rangsсhikking} />
           ) : null}
           {carouselItems[index]?.type === 'sponsor' && typeof carouselItems[index]?.data === 'string' ? (
             <CarrouselSponserItem images={[carouselItems[index]?.data as string]} />

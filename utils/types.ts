@@ -14,3 +14,10 @@ export interface Wedstrijd {
   week: number;
   timestamp: number;
 }
+
+export interface Rangschikking {
+  volgorde: string;
+  ploegnaam: string;
+  puntentotaal: string;
+  isVCM: boolean;
+}
