@@ -7,29 +7,34 @@ type Props = {
 const Rangschikking: React.FC<Props> = ({ rankschikking }) => {
   // Debug: log the received ranking data
   console.log('Rangschikking data:', rankschikking);
-  // If no data, show a default row. If data, show all teams with punten 0 and volgorde as 'ex aequo'.
+  
   const hasData = rankschikking && rankschikking.length > 0;
+  
   return hasData ? (
-    <table>
+    <table className="w-full">
       <thead>
-        <tr>
-          <th>Positie</th>
-          <th>Team</th>
-          <th>Punten</th>
+        <tr className="border-b">
+          <th className="text-left p-2">Pos</th>
+          <th className="text-left p-2">Team</th>
+          <th className="text-right p-2">Punten</th>
         </tr>
       </thead>
       <tbody>
         {rankschikking.map((team, index) => (
-          <tr key={index}>
-            <td></td>
-            <td>{team.ploegnaam}</td>
-            <td>0</td>
+          <tr key={index} className={`border-b ${team.isVCM ? 'bg-yellow-100 font-bold' : ''}`}>
+            <td className="p-2">{team.volgorde}</td>
+            <td className={`p-2 ${team.isVCM ? 'text-yellow-600' : ''}`}>
+              {team.ploegnaam}
+            </td>
+            <td className="p-2 text-right">{team.puntentotaal}</td>
           </tr>
         ))}
       </tbody>
     </table>
   ) : (
-    <p>Geen rangschikking beschikbaar.</p>
+    <div className="text-center p-4">
+      <p>Geen rangschikking beschikbaar.</p>
+    </div>
   );
 };
 
