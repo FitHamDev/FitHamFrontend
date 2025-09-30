@@ -93,7 +93,11 @@ const Carrousel: React.FC = ({}) => {
       volgorde: team.volgorde,
       ploegnaam: team.ploegnaam.replace(/[+-]/g, ''),
       puntentotaal: team.puntentotaal,
-      isVCM: team.ploegnaam.toLowerCase().includes('ham')
+      isVCM: team.ploegnaam.toLowerCase().includes('ham') || 
+             team.ploegnaam.toLowerCase().includes('molenstede') ||
+             team.ploegnaam.toLowerCase().includes('vrodis') ||
+             team.ploegnaam.toLowerCase().includes('gisteren waren') ||
+             team.ploegnaam.toLowerCase().includes('dovro')
     }));
   };
 
