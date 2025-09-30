@@ -21,3 +21,25 @@ export interface Rangschikking {
   puntentotaal: string;
   isVCM: boolean;
 }
+
+export interface VolleyAdminRangschikking {
+  reeks: string;
+  reeksid: string;
+  wedstrijdtype: string;
+  volgorde: string;
+  ploegid: string;
+  ploegnaam: string;
+  aantalGespeeldeWedstrijden: string;
+  aantalGewonnen30_31: string;
+  aantalGewonnen32: string;
+  aantalVerloren32: string;
+  aantalVerloren30_31: string;
+  aantalGewonnenSets: string;
+  aantalVerlorenSets: string;
+  puntentotaal: string;
+  forfait: string;
+}
+
+export interface VolleyAdminKlassement {
+  rangschikking: VolleyAdminRangschikking[];
+}
