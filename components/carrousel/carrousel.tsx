@@ -93,11 +93,7 @@ const Carrousel: React.FC = ({}) => {
       volgorde: team.volgorde,
       ploegnaam: team.ploegnaam.replace(/[+-]/g, ''),
       puntentotaal: team.puntentotaal,
-      isVCM: team.ploegnaam.toLowerCase().includes('ham') || 
-             team.ploegnaam.toLowerCase().includes('molenstede') ||
-             team.ploegnaam.toLowerCase().includes('vrodis') ||
-             team.ploegnaam.toLowerCase().includes('gisteren waren') ||
-             team.ploegnaam.toLowerCase().includes('dovro')
+      isVCM: false // Highlighting will now be handled based on match participation
     }));
   };
 
@@ -193,6 +189,15 @@ const Carrousel: React.FC = ({}) => {
     fetchWedstrijden();
   }, []);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      console.log("Auto-refreshing match data...");
+      fetchWedstrijden();
+    }, 300000); 
+
+    return () => clearInterval(interval);
+  }, []);
+
   // Fetch ranking when the current match changes
   useEffect(() => {
     if (carouselItems.length > 0 && carouselItems[index]?.type === 'match') {
@@ -213,7 +218,7 @@ const Carrousel: React.FC = ({}) => {
   }, [carouselItems.length]);
 
   return (
-    <div className="min-h-screen w-full">
+    <div className="min-h-screen w-full bg-gradient-to-t from-cyan-400 to-blue-900">
       {carouselItems.length > 0 && carouselItems[index] != null && (
         <div className="w-full h-full">
           {carouselItems[index]?.type === 'match' && typeof carouselItems[index]?.data !== 'string' ? (
