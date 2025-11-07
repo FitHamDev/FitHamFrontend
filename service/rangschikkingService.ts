@@ -3,6 +3,7 @@ import { VolleyAdminKlassement, VolleyAdminRangschikking } from '../utils/types'
 const API_URL = process.env.NEXT_PUBLIC_API_URL || '';
 
 const getRangschikkingByReeks = async (reeksNr: string, stamnummer: string = 'L-0759') => {
+    console.log('🏆 Retrieving rangschikking data for reeks:', reeksNr, 'stamnummer:', stamnummer);
     const response = await fetch(
         `${API_URL}/rangschikking?reeks=${encodeURIComponent(reeksNr)}&stamnummer=${encodeURIComponent(stamnummer)}`,
         {
@@ -131,6 +132,7 @@ const parseXMLToObject = (xmlString: string): VolleyAdminKlassement => {
 
 // Function to fetch ranking data from VolleyAdmin API with CORS proxy
 const getRangschikkingFromVolleyAdmin = async (reeks: string, stamnummer: string = 'L-0759'): Promise<VolleyAdminKlassement> => {
+    console.log('🏆 Retrieving rangschikking data from VolleyAdmin API for reeks:', reeks, 'stamnummer:', stamnummer);
     // Use a CORS proxy service for static export compatibility
     const targetUrl = `https://www.volleyadmin2.be/services/rangschikking_xml.php?stamnummer=${encodeURIComponent(stamnummer)}&reeks=${encodeURIComponent(reeks)}`;
     const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`;

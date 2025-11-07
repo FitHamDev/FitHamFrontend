@@ -86,13 +86,18 @@ const parseWedstrijdenXML = (xmlString: string): any[] => {
 };
 
 const getWedstrijdenByStamnummer = async (stamnummer: string = 'L-0759') => {
+  console.log('🏐 Retrieving match data for stamnummer:', stamnummer);
   try {
     const targetUrl = `https://www.volleyadmin2.be/services/wedstrijden_xml.php?stamnummer=${stamnummer}`;
-    const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`;
+    
+    // Use a reliable CORS proxy - corsproxy.io is more reliable than allorigins
+    const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`;
     
     const response = await fetch(proxyUrl, {
       method: "GET",
-      headers: { "Accept": "text/xml, application/xml, */*" }
+      headers: { 
+        "Accept": "text/xml, application/xml, */*"
+      }
     });
     
     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
