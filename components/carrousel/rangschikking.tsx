@@ -39,7 +39,7 @@ const RangschikkingTable: React.FC<Props> = ({ rankschikking, thuisploeg, bezoek
   
   // Filter to show only 12 teams closest to Ham teams (or playing teams) when there are more than 12 teams
   const getDisplayedTeams = (teams: Rangschikking[]): Rangschikking[] => {
-    const DISPLAY_COUNT = 12;
+    const DISPLAY_COUNT = 10;
     if (teams.length <= DISPLAY_COUNT) return teams;
 
     // Prefer centering around Ham teams if present in the ranking
