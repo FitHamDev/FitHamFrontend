@@ -48,7 +48,7 @@ const MatchSlide: React.FC<Props> = ({ wedstrijd, rangschikking }) => {
     <div className="relative min-h-screen w-full flex bg-white/70 overflow-hidden">
       {/* Centered series title (big, white) */}
       <div className="absolute inset-x-0 top-10 z-50 flex justify-center pointer-events-none">
-        <h1 className="text-6xl md:text-8xl font-black text-white drop-shadow-[0_5px_5px_rgba(0,0,0,0.8)] tracking-wider uppercase text-center px-4">
+        <h1 className="text-7xl md:text-9xl font-black text-white drop-shadow-[0_5px_5px_rgba(0,0,0,0.8)] tracking-wider uppercase text-center px-4">
           {formatReeks(wedstrijd.reeksnaam, wedstrijd.reeks)}
         </h1>
       </div>
@@ -58,28 +58,28 @@ const MatchSlide: React.FC<Props> = ({ wedstrijd, rangschikking }) => {
         style={{ backgroundImage: `url('/carrousel_item_pattern.png')` }}
       />
 
-      <div className="absolute top-6 left-6 z-60 bg-red-600 text-white text-xl px-4 py-2 rounded-lg font-bold shadow-lg">MATCH</div>
+      <div className="absolute top-6 left-6 z-60 bg-red-600 text-white text-3xl px-6 py-3 rounded-lg font-bold shadow-lg">MATCH</div>
 
       {/* Match info: full width when no rangschikking, otherwise 40% */}
       <div className={`relative z-50 ${hasRang ? 'w-2/5' : 'w-full'} flex flex-col items-center justify-center text-center p-4`}>
-        <div className="bg-blue-900/40 backdrop-blur-md p-10 rounded-3xl border border-white/20 shadow-2xl w-full max-w-2xl transform">
-          <h2 className="text-4xl md:text-5xl font-black text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] mb-8 leading-tight flex flex-col gap-2">
+        <div className="bg-blue-900/40 backdrop-blur-md p-10 rounded-3xl border border-white/20 shadow-2xl w-full max-w-2xl transform scale-110">
+          <h2 className="text-5xl md:text-7xl font-black text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] mb-8 leading-tight flex flex-col gap-2">
             <span className="block">{home}</span>
-            <span className="text-3xl text-yellow-400 font-bold opacity-90">-</span>
+            <span className="text-5xl text-yellow-400 font-bold opacity-90">-</span>
             <span className="block">{away}</span>
           </h2>
           
           <div className="bg-black/20 rounded-2xl p-6 mb-8 inline-block border border-white/10">
-            <p className="text-[6rem] leading-none text-white font-black drop-shadow-[0_4px_4px_rgba(0,0,0,0.5)] tracking-tighter">
+            <p className="text-[8rem] leading-none text-white font-black drop-shadow-[0_4px_4px_rgba(0,0,0,0.5)] tracking-tighter">
               {wedstrijd.uitslag?.trim() || '0 - 0'}
             </p>
           </div>
           
           <div className="flex flex-col items-center gap-3">
-            <p className="text-4xl text-white font-bold drop-shadow-md uppercase">
+            <p className="text-5xl text-white font-bold drop-shadow-md uppercase">
               {parsedDate.toLocaleDateString('nl-BE', { day: 'numeric', month: 'short' })}
             </p>
-            <p className="text-5xl text-yellow-400 font-black drop-shadow-md bg-black/20 px-6 py-2 rounded-xl border border-white/10">
+            <p className="text-6xl text-yellow-400 font-black drop-shadow-md bg-black/20 px-8 py-3 rounded-xl border border-white/10">
               {wedstrijd.aanvangsuur}
             </p>
           </div>
