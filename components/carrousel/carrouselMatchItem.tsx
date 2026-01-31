@@ -50,7 +50,7 @@ const CarrouselMatchItem: React.FC<Props> = ({ wedstrijd, rangschikking }) => {
     <div className="relative min-h-screen w-full flex bg-white/70 overflow-hidden">
       {/* Centered series title (big, white) */}
       <div className="absolute inset-x-0 top-6 z-50 flex justify-center pointer-events-none">
-        <h1 className="text-[8rem] md:text-[12rem] font-black text-white drop-shadow-[0_8px_8px_rgba(0,0,0,0.8)] tracking-wide uppercase text-center px-4 leading-[0.80]">
+        <h1 className="text-[2rem] md:text-[4rem] font-black text-white drop-shadow-[0_8px_8px_rgba(0,0,0,0.8)] tracking-wide uppercase text-center px-4 leading-[0.80]">
           {formatReeks(wedstrijd.reeksnaam, wedstrijd.reeks)}
         </h1>
       </div>
@@ -60,8 +60,6 @@ const CarrouselMatchItem: React.FC<Props> = ({ wedstrijd, rangschikking }) => {
         style={{ backgroundImage: `url('${basePath}/carrousel_item_pattern.png')` }}
       />
       
-      <div className="absolute top-10 left-10 z-60 bg-red-600 text-white text-8xl px-10 py-6 rounded-2xl font-bold shadow-2xl">MATCH</div>
-
       {/* Left side - Match info: full width when no rangschikking */}
       <div className={`relative z-50 ${hasRang ? 'w-[40%]' : 'w-full'} flex flex-col items-center justify-center text-center p-6 pt-40`}>
         <div className="bg-blue-900/40 backdrop-blur-md p-6 rounded-[2.5rem] border-4 border-white/20 shadow-2xl w-full max-w-full mx-4">
