@@ -47,29 +47,51 @@ const CarrouselMatchItem: React.FC<Props> = ({ wedstrijd, rangschikking }) => {
   };
 
   return (
-    <div className="relative min-h-screen w-full flex bg-white/70">
+    <div className="relative min-h-screen w-full flex bg-white/70 overflow-hidden">
       {/* Centered series title (big, white) */}
-      <div className="absolute inset-x-0 mt-12 z-50 flex justify-center pointer-events-none">
-        <h1 className="text-3xl md:text-5xl font-extrabold text-white drop-shadow-lg">{formatReeks(wedstrijd.reeksnaam, wedstrijd.reeks)}</h1>
+      <div className="absolute inset-x-0 top-6 z-50 flex justify-center pointer-events-none">
+        <h1 className="text-[12rem] md:text-[16rem] font-black text-white drop-shadow-[0_8px_8px_rgba(0,0,0,0.8)] tracking-wide uppercase text-center px-4 leading-[0.80]">
+          {formatReeks(wedstrijd.reeksnaam, wedstrijd.reeks)}
+        </h1>
       </div>
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-300/40 via-blue-500/60 to-blue-900/80 z-0"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-400/60 via-blue-600/70 to-blue-900/90 z-0"></div>
       <div
-        className="absolute inset-0 bg-cover bg-center opacity-[8%] z-10"
+        className="absolute inset-0 bg-cover bg-center opacity-[15%] z-10"
         style={{ backgroundImage: `url('${basePath}/carrousel_item_pattern.png')` }}
       />
       
+      <div className="absolute top-10 left-10 z-60 bg-red-600 text-white text-8xl px-10 py-6 rounded-2xl font-bold shadow-2xl">MATCH</div>
+
       {/* Left side - Match info: full width when no rangschikking */}
-      <div className={`relative z-50 ${hasRang ? 'w-2/5' : 'w-full'} flex flex-col items-center justify-center text-center p-8`}>
-        <h2 className="text-[1.5rem] font-bold text-white drop-shadow-lg mb-4">{home} - {away}</h2>
-        <p className="text-[2.5rem] text-white font-bold drop-shadow-lg mb-4">{wedstrijd.uitslag?.trim() || "0 - 0"}</p>
-        <p className="text-[1.2rem] text-white drop-shadow-lg mb-2">{formatReeks(wedstrijd.reeksnaam, wedstrijd.reeks)}</p>
-        <p className="text-[1.2rem] text-white drop-shadow-lg">{parsedDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}, {wedstrijd.aanvangsuur}</p>
+      <div className={`relative z-50 ${hasRang ? 'w-[48%]' : 'w-full'} flex flex-col items-center justify-center text-center p-6 pt-40`}>
+        <div className="bg-blue-900/40 backdrop-blur-md p-14 rounded-[4rem] border-4 border-white/20 shadow-2xl w-full max-w-full mx-4">
+          <h2 className="text-[8rem] lg:text-[10rem] font-black text-white drop-shadow-[0_6px_6px_rgba(0,0,0,0.8)] mb-10 leading-[0.85] flex flex-col gap-6">
+            <span className="block">{home}</span>
+            <span className="text-[9rem] text-yellow-400 font-bold opacity-90 leading-none">-</span>
+            <span className="block">{away}</span>
+          </h2>
+          
+          <div className="bg-black/20 rounded-[3rem] p-10 mb-12 inline-block border-4 border-white/10 shadow-inner">
+            <p className="text-[24rem] leading-[0.75] text-white font-black drop-shadow-[0_8px_8px_rgba(0,0,0,0.5)] tracking-tighter">
+              {wedstrijd.uitslag?.trim() || "0 - 0"}
+            </p>
+          </div>
+          
+          <div className="flex flex-col items-center gap-8">
+            <p className="text-[7rem] text-white font-bold drop-shadow-md uppercase leading-none">
+              {parsedDate.toLocaleDateString('nl-BE', { day: 'numeric', month: 'short' })}
+            </p>
+            <p className="text-[9rem] text-yellow-400 font-black drop-shadow-md bg-black/20 px-16 py-6 rounded-3xl border-4 border-white/10 leading-none">
+              {wedstrijd.aanvangsuur}
+            </p>
+          </div>
+        </div>
       </div>
       
       {/* Right side - Rangschikking table (60%) */}
       {hasRang && (
-        <div className="relative z-50 w-3/5 flex items-center justify-center p-8">
-          <div className="w-full max-w-4xl">
+        <div className="relative z-50 w-[52%] flex items-center justify-center p-8 pt-40">
+          <div className="w-full">
             <RangschikkingTable 
               rankschikking={rangschikking} 
               thuisploeg={home}
