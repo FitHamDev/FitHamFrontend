@@ -50,7 +50,7 @@ const CarrouselMatchItem: React.FC<Props> = ({ wedstrijd, rangschikking }) => {
     <div className="relative min-h-screen w-full flex bg-white/70 overflow-hidden">
       {/* Centered series title (big, white) */}
       <div className="absolute inset-x-0 top-6 z-50 flex justify-center pointer-events-none">
-        <h1 className="text-[12rem] md:text-[16rem] font-black text-white drop-shadow-[0_8px_8px_rgba(0,0,0,0.8)] tracking-wide uppercase text-center px-4 leading-[0.80]">
+        <h1 className="text-[8rem] md:text-[12rem] font-black text-white drop-shadow-[0_8px_8px_rgba(0,0,0,0.8)] tracking-wide uppercase text-center px-4 leading-[0.80]">
           {formatReeks(wedstrijd.reeksnaam, wedstrijd.reeks)}
         </h1>
       </div>
@@ -63,25 +63,25 @@ const CarrouselMatchItem: React.FC<Props> = ({ wedstrijd, rangschikking }) => {
       <div className="absolute top-10 left-10 z-60 bg-red-600 text-white text-8xl px-10 py-6 rounded-2xl font-bold shadow-2xl">MATCH</div>
 
       {/* Left side - Match info: full width when no rangschikking */}
-      <div className={`relative z-50 ${hasRang ? 'w-[48%]' : 'w-full'} flex flex-col items-center justify-center text-center p-6 pt-40`}>
-        <div className="bg-blue-900/40 backdrop-blur-md p-14 rounded-[4rem] border-4 border-white/20 shadow-2xl w-full max-w-full mx-4">
-          <h2 className="text-[8rem] lg:text-[10rem] font-black text-white drop-shadow-[0_6px_6px_rgba(0,0,0,0.8)] mb-10 leading-[0.85] flex flex-col gap-6">
-            <span className="block">{home}</span>
-            <span className="text-[9rem] text-yellow-400 font-bold opacity-90 leading-none">-</span>
-            <span className="block">{away}</span>
+      <div className={`relative z-50 ${hasRang ? 'w-[40%]' : 'w-full'} flex flex-col items-center justify-center text-center p-6 pt-40`}>
+        <div className="bg-blue-900/40 backdrop-blur-md p-6 rounded-[2.5rem] border-4 border-white/20 shadow-2xl w-full max-w-full mx-4">
+          <h2 className="text-[2.5rem] lg:text-[3.5rem] font-black text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] mb-4 leading-tight flex flex-col gap-3">
+            <span className="block leading-none">{home}</span>
+            <span className="text-[2.5rem] text-yellow-400 font-bold opacity-90 leading-none py-2">-</span>
+            <span className="block leading-none">{away}</span>
           </h2>
           
-          <div className="bg-black/20 rounded-[3rem] p-10 mb-12 inline-block border-4 border-white/10 shadow-inner">
-            <p className="text-[24rem] leading-[0.75] text-white font-black drop-shadow-[0_8px_8px_rgba(0,0,0,0.5)] tracking-tighter">
+          <div className="bg-black/20 rounded-[2rem] p-4 mb-6 inline-block border-4 border-white/10 shadow-inner">
+            <p className="text-[6rem] leading-[0.8] text-white font-black drop-shadow-[0_6px_6px_rgba(0,0,0,0.5)] tracking-tighter">
               {wedstrijd.uitslag?.trim() || "0 - 0"}
             </p>
           </div>
           
-          <div className="flex flex-col items-center gap-8">
-            <p className="text-[7rem] text-white font-bold drop-shadow-md uppercase leading-none">
+          <div className="flex flex-col items-center gap-3">
+            <p className="text-[2rem] text-white font-bold drop-shadow-md uppercase leading-none">
               {parsedDate.toLocaleDateString('nl-BE', { day: 'numeric', month: 'short' })}
             </p>
-            <p className="text-[9rem] text-yellow-400 font-black drop-shadow-md bg-black/20 px-16 py-6 rounded-3xl border-4 border-white/10 leading-none">
+            <p className="text-[2.5rem] text-yellow-400 font-black drop-shadow-md bg-black/20 px-6 py-3 rounded-2xl border-4 border-white/10 leading-none">
               {wedstrijd.aanvangsuur}
             </p>
           </div>
@@ -90,7 +90,7 @@ const CarrouselMatchItem: React.FC<Props> = ({ wedstrijd, rangschikking }) => {
       
       {/* Right side - Rangschikking table (60%) */}
       {hasRang && (
-        <div className="relative z-50 w-[52%] flex items-center justify-center p-8 pt-40">
+        <div className="relative z-50 w-[60%] flex items-center justify-center p-8 pt-40">
           <div className="w-full">
             <RangschikkingTable 
               rankschikking={rangschikking} 
