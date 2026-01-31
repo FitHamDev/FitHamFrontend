@@ -83,7 +83,7 @@ const RangschikkingTable: React.FC<Props> = ({ rankschikking, thuisploeg, bezoek
           <div 
             key={team.volgorde} 
             className={`flex items-center justify-between py-2 px-3 rounded text-blue-900 font-bold ${
-              isPlayingHamTeam(team.ploegnaam)
+              isPlayingHamTeam(team.ploegnaam) || isHamTeam(team.ploegnaam) || team.isVCM
                 ? 'bg-yellow-400' 
                 : 'bg-white/80'
             }`}
