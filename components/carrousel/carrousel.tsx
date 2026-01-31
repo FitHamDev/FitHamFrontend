@@ -10,17 +10,24 @@ import { filterWedstrijdenThisWeek } from "../../utils/dateUtils";
 
 // --- Custom hooks for fetching and mapping logic ---
 function useSponsorImages(basePath: string) {
-  const sponsorFilenames = [
-    "algorythm_group.png", "alpaca_pachmana.jpg", "apotheek_wim.jpeg", "asbeter.png", "aveve.jpeg",
-    "belfius.jpeg", "bnp_paribas_fortis.jpeg", "cafea.jpeg", "camps.jpeg", "catronics.png", "deferm.png",
-    "dryking.png", "enona.jpeg", "eurorepar.jpeg", "forigi.jpeg", "frituur_kristel.svg", "g&s_cooling.png",
-    "getax.jpeg", "hermosa.jpg", "imagie.jpeg", "interieurhuis_gerda.jpeg", "iverans_fietscafé.png",
-    "jacobsmode.jpeg", "jos_beckx.jpeg", "matimmo.png", "mobifrit.webp", "mozaver.jpeg", "peugeot.jpeg",
-    "plm_services.jpeg", "ren_tessenderlo.jpeg", "ronnie_en_zoon.jpeg", "schilderwerken_vds.png",
-    "silverfish.jpeg", "tennisclub_ham.jpeg", "tuinwerken_beyens.jpeg", "uva_doro.png", "vicus.jpeg",
-    "vrijsens.png", "vyanova.jpg", "wijckmans.jpeg", "wilfried_geukens.jpeg", "willems.jpeg"
-  ];
-  return sponsorFilenames.map(filename => `${basePath}/sponsors/${filename}`);
+  const [images, setImages] = useState<string[]>([]);
+
+  useEffect(() => {
+    async function fetchSponsors() {
+      try {
+        const response = await fetch(`${basePath || ''}/api/sponsors`);
+        if (response.ok) {
+          const filenames: string[] = await response.json();
+          setImages(filenames.map(filename => `${basePath || ''}/sponsors/${filename}`));
+        }
+      } catch (error) {
+        console.error("Failed to fetch sponsors:", error);
+      }
+    }
+    fetchSponsors();
+  }, [basePath]);
+
+  return images;
 }
 
 function useSortedWedstrijden() {

@@ -63,14 +63,14 @@ const CarrouselMatchItem: React.FC<Props> = ({ wedstrijd, rangschikking }) => {
       {/* Left side - Match info: full width when no rangschikking */}
       <div className={`relative z-50 ${hasRang ? 'w-[40%]' : 'w-full'} flex flex-col items-center justify-center text-center p-6 pt-40`}>
         <div className="bg-blue-900/40 backdrop-blur-md p-6 rounded-[2.5rem] border-4 border-white/20 shadow-2xl w-full max-w-full mx-4">
-          <h2 className="text-[2.5rem] lg:text-[3.5rem] font-black text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] mb-4 leading-tight flex flex-col gap-3">
+          <h2 className="text-[2.5rem] lg:text-[3.5rem] font-black text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] mb-4 leading-tight flex flex-col gap-2">
             <span className="block leading-none">{home}</span>
-            <span className="text-[2.5rem] text-yellow-400 font-bold opacity-90 leading-none py-2">-</span>
+            <span className="text-[2rem] text-white font-bold opacity-90 leading-none py-1">-</span>
             <span className="block leading-none">{away}</span>
           </h2>
           
-          <div className="bg-black/20 rounded-[2rem] p-4 mb-6 inline-block border-4 border-white/10 shadow-inner">
-            <p className="text-[6rem] leading-[0.8] text-white font-black drop-shadow-[0_6px_6px_rgba(0,0,0,0.5)] tracking-tighter">
+          <div className="bg-black/20 rounded-[2rem] p-4 mb-6 inline-block border-4 border-white/10 shadow-inner mx-auto">
+            <p className="text-[5rem] leading-[1] text-white font-black drop-shadow-[0_6px_6px_rgba(0,0,0,0.5)] tracking-tighter">
               {wedstrijd.uitslag?.trim() || "0 - 0"}
             </p>
           </div>
