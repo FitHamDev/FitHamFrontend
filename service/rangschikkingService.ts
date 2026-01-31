@@ -139,10 +139,10 @@ const parseXMLToObject = (xmlString: string): VolleyAdminKlassement => {
 // Function to fetch ranking data from VolleyAdmin API with CORS proxy
 const getRangschikkingFromVolleyAdmin = async (reeks: string, stamnummer: string = 'L-0759'): Promise<VolleyAdminKlassement> => {
     console.log('🏆 Retrieving rangschikking data from VolleyAdmin API for reeks:', reeks, 'stamnummer:', stamnummer);
-    // Use a CORS proxy service for static export compatibility
-    const targetUrl = `https://www.volleyadmin2.be/services/rangschikking_xml.php?stamnummer=${encodeURIComponent(stamnummer)}&reeks=${encodeURIComponent(reeks)}`;
-    // Switch to allorigins.win which tends to mask the origin better than corsproxy.io
-    const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}&timestamp=${new Date().getTime()}`;
+    
+    // Use our own internal API proxy to avoid CORS issues
+    // This calls pages/api/proxy-rangschikking.ts which performs the server-side fetch
+    const proxyUrl = `/api/proxy-rangschikking?stamnummer=${encodeURIComponent(stamnummer)}&reeks=${encodeURIComponent(reeks)}&timestamp=${new Date().getTime()}`;
     
     console.log('Fetching volleyball ranking for', reeks, 'from', stamnummer);
     
