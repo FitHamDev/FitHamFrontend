@@ -69,7 +69,7 @@ const MatchSlide: React.FC<Props> = ({ wedstrijd, rangschikking }) => {
       {/* Rangschikking: only render when data exists */}
       {hasRang && (
         <div className="relative z-50 w-3/5 flex items-center justify-center p-8">
-          <div className="w-full max-w-4xl">
+          <div className="w-full">
             <RangschikkingTable
               rankschikking={rangschikking}
               thuisploeg={home}

@@ -39,7 +39,7 @@ const RangschikkingTable: React.FC<Props> = ({ rankschikking, thuisploeg, bezoek
   
   // Filter to show only 12 teams closest to Ham teams (or playing teams) when there are more than 12 teams
   const getDisplayedTeams = (teams: Rangschikking[]): Rangschikking[] => {
-    const DISPLAY_COUNT = 10;
+    const DISPLAY_COUNT = 12;
     if (teams.length <= DISPLAY_COUNT) return teams;
 
     // Prefer centering around Ham teams if present in the ranking
@@ -77,34 +77,34 @@ const RangschikkingTable: React.FC<Props> = ({ rankschikking, thuisploeg, bezoek
   const displayedTeams = hasData ? getDisplayedTeams(rankschikking) : [];
   
   return hasData ? (
-    <div className="p-2">
-      <div className="space-y-1">
+    <div className="w-full">
+      <div className="space-y-3">
         {displayedTeams.map((team) => (
           <div 
             key={team.volgorde} 
-            className={`flex items-center justify-between py-2 px-3 rounded text-blue-900 font-bold ${
+            className={`flex items-center justify-between py-3 px-6 rounded-lg shadow-md text-blue-900 font-bold ${
               isPlayingHamTeam(team.ploegnaam) || isHamTeam(team.ploegnaam) || team.isVCM
-                ? 'bg-yellow-400' 
-                : 'bg-white/80'
+                ? 'bg-yellow-400 scale-105 z-10' 
+                : 'bg-white/90'
             }`}
           >
-            <div className="flex items-center space-x-2">
-              <span className="text-sm w-6">
+            <div className="flex items-center space-x-6 flex-1 min-w-0">
+              <span className="text-2xl font-black w-12 text-center flex-shrink-0">
                 {team.volgorde}
               </span>
-              <span>
+              <span className="text-3xl truncate">
                 {team.ploegnaam}
               </span>
             </div>
-            <span className="font-black">
+            <span className="text-4xl font-black ml-4 flex-shrink-0">
               {team.puntentotaal}
             </span>
           </div>
         ))}
       </div>
-      {rankschikking.length > 12 && (
-        <p className="text-xs text-blue-900/60 text-center mt-2">
-          {displayedTeams.length} van {rankschikking.length} teams
+      {rankschikking.length > 10 && (
+        <p className="text-xl text-white font-bold drop-shadow-md text-center mt-6">
+          ... {displayedTeams.length} van {rankschikking.length} teams getoond ...
         </p>
       )}
     </div>
