@@ -91,7 +91,7 @@ const CarrouselMatchItem: React.FC<Props> = ({ wedstrijd, rangschikking }) => {
         <div className="relative z-50 w-[60%] flex items-center justify-center p-8 pt-40">
           <div className="w-full">
             <RangschikkingTable 
-              rankschikking={rangschikking} 
+              rangschikking={rangschikking} 
               thuisploeg={home}
               bezoekersploeg={away}
             />

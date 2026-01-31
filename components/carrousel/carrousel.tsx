@@ -1,8 +1,8 @@
 
 import React, { useEffect, useState, useMemo } from "react";
 import { useRouter } from 'next/router';
-import CarrouselMatchItem from "./carrouselMatchItem";
-import CarrouselSponserItem from "./carrouselSponserItem";
+import CarrouselMatchItem from "./CarrouselMatchItem";
+import CarrouselSponsorItem from "./CarrouselSponsorItem";
 import { Rangschikking, Wedstrijd, VolleyAdminRangschikking } from "../../utils/types";
 import matchService from "../../service/matchService";
 import rangschikkingService from "../../service/rangschikkingService";
@@ -81,18 +81,21 @@ function useRangschikking(currentReeks: string | null) {
       try {
         const mappedReeks = mapReeksToVolleyAdmin(currentReeks!);
         const volleyAdminData = await rangschikkingService.getRangschikkingFromVolleyAdmin(mappedReeks, "L-0759");
-        if (volleyAdminData && volleyAdminData.rangschikking && volleyAdminData.rangschikking.length > 0) {
+        if (volleyAdminData?.rangschikking?.length > 0) {
           if (!cancelled) setRangschikking(convertVolleyAdminToRangschikking(volleyAdminData.rangschikking));
           return;
         }
       } catch {}
-      try {
-        const volleyAdminData = await rangschikkingService.getRangschikkingFromVolleyAdmin(currentReeks!, "L-0759");
-        if (volleyAdminData && volleyAdminData.rangschikking && volleyAdminData.rangschikking.length > 0) {
-          if (!cancelled) setRangschikking(convertVolleyAdminToRangschikking(volleyAdminData.rangschikking));
-          return;
-        }
-      } catch {}
+      
+      if (mapReeksToVolleyAdmin(currentReeks!) !== currentReeks!) {
+        try {
+          const volleyAdminData = await rangschikkingService.getRangschikkingFromVolleyAdmin(currentReeks!, "L-0759");
+          if (volleyAdminData?.rangschikking?.length > 0) {
+            if (!cancelled) setRangschikking(convertVolleyAdminToRangschikking(volleyAdminData.rangschikking));
+            return;
+          }
+        } catch {}
+      }
       try {
         const response = await rangschikkingService.getRangschikkingByReeks(currentReeks!, "L-0759");
         if (response.success && response.data) {
@@ -156,14 +159,18 @@ const Carrousel: React.FC = () => {
 
   return (
     <div className="min-h-screen w-full">
-      {carouselItems.length > 0 && carouselItems[carouselIndex] != null && (
+      {carouselItems[carouselIndex] && (
         <div className="w-full h-full">
-          {carouselItems[carouselIndex]?.type === 'match' && typeof carouselItems[carouselIndex]?.data !== 'string' ? (
-            <CarrouselMatchItem wedstrijd={carouselItems[carouselIndex]?.data as Wedstrijd} rangschikking={rangschikking} />
-          ) : null}
-          {carouselItems[carouselIndex]?.type === 'sponsor' && typeof carouselItems[carouselIndex]?.data === 'string' ? (
-            <CarrouselSponserItem images={[carouselItems[carouselIndex]?.data as string]} />
-          ) : null}
+          {carouselItems[carouselIndex].type === 'match' ? (
+            <CarrouselMatchItem 
+              wedstrijd={carouselItems[carouselIndex].data as Wedstrijd} 
+              rangschikking={rangschikking} 
+            />
+          ) : (
+            <CarrouselSponsorItem 
+              images={[carouselItems[carouselIndex].data as string]} 
+            />
+          )}
         </div>
       )}
     </div>
