@@ -19,10 +19,18 @@ const RangschikkingTestPage: React.FC = () => {
     setError(null);
     try {
       const response = await rangschikkingService.getRangschikkingByReeks(reeks);
-      if (response.success) {
-        setRangschikkingData(response.data || []);
+      // Adapted for direct service call which now returns VolleyAdminKlassement
+      if (response && response.rangschikking) {
+         // Map VolleyAdminRangschikking to internal Rangschikking type
+        const mappedData: RangschikkingType[] = response.rangschikking.map(item => ({
+            volgorde: item.volgorde,
+            ploegnaam: item.ploegnaam,
+            puntentotaal: item.puntentotaal,
+            isVCM: item.ploegnaam.toLowerCase().includes('ham') // Simple check for own team
+        }));
+        setRangschikkingData(mappedData);
       } else {
-        setError('Failed to fetch ranking data');
+        setError('Failed to fetch ranking data or empty result');
       }
     } catch (error) {
       console.error('Error fetching rangschikking:', error);

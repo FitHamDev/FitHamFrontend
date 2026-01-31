@@ -90,8 +90,8 @@ const getWedstrijdenByStamnummer = async (stamnummer: string = 'L-0759') => {
   try {
     const targetUrl = `https://www.volleyadmin2.be/services/wedstrijden_xml.php?stamnummer=${stamnummer}`;
     
-    // Use a reliable CORS proxy - corsproxy.io is more reliable than allorigins
-    const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`;
+    // Switch to allorigins.win which tends to mask the origin better than corsproxy.io
+    const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}&timestamp=${new Date().getTime()}`;
     
     const response = await fetch(proxyUrl, {
       method: "GET",

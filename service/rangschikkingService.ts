@@ -1,25 +1,31 @@
 import { VolleyAdminKlassement, VolleyAdminRangschikking } from '../utils/types';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || '';
-
 const getRangschikkingByReeks = async (reeksNr: string, stamnummer: string = 'L-0759') => {
     console.log('🏆 Retrieving rangschikking data for reeks:', reeksNr, 'stamnummer:', stamnummer);
-    const response = await fetch(
-        `${API_URL}/rangschikking?reeks=${encodeURIComponent(reeksNr)}&stamnummer=${encodeURIComponent(stamnummer)}`,
-        {
+    
+    // Direct fetch via CORS proxy because we are in static export mode
+    try {
+        const targetUrl = `https://www.volleyadmin2.be/services/rangschikking_xml.php?stamnummer=${encodeURIComponent(stamnummer)}&reeks=${encodeURIComponent(reeksNr)}`;
+        // Switch to allorigins.win which tends to mask the origin better than corsproxy.io
+        const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}&timestamp=${new Date().getTime()}`;
+        
+        const response = await fetch(proxyUrl, {
             method: "GET",
             headers: {
-                "Content-Type": "application/json",
-            },
+                "Accept": "text/xml, application/xml, */*",
+            }
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
-    );
-    
-    if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        
+        const xmlString = await response.text();
+        return parseXMLToObject(xmlString);
+    } catch (error) {
+        console.error('Error fetching rangschikking:', error);
+        throw error;
     }
-    
-    const data = await response.json();
-    return data;
 }
 
 // Fallback regex parsing function
@@ -135,7 +141,8 @@ const getRangschikkingFromVolleyAdmin = async (reeks: string, stamnummer: string
     console.log('🏆 Retrieving rangschikking data from VolleyAdmin API for reeks:', reeks, 'stamnummer:', stamnummer);
     // Use a CORS proxy service for static export compatibility
     const targetUrl = `https://www.volleyadmin2.be/services/rangschikking_xml.php?stamnummer=${encodeURIComponent(stamnummer)}&reeks=${encodeURIComponent(reeks)}`;
-    const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`;
+    // Switch to allorigins.win which tends to mask the origin better than corsproxy.io
+    const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}&timestamp=${new Date().getTime()}`;
     
     console.log('Fetching volleyball ranking for', reeks, 'from', stamnummer);
     
@@ -144,7 +151,7 @@ const getRangschikkingFromVolleyAdmin = async (reeks: string, stamnummer: string
             method: "GET",
             headers: {
                 "Accept": "text/xml, application/xml, */*",
-            },
+            }
         });
         
         if (!response.ok) {
