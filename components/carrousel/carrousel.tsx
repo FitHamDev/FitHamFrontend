@@ -52,6 +52,8 @@ function useSortedWedstrijden() {
       }
     }
     fetchWedstrijden();
+    const interval = setInterval(fetchWedstrijden, 300000);
+    return () => clearInterval(interval);
   }, []);
   return wedstrijden;
 }
@@ -81,7 +83,7 @@ function useRangschikking(currentReeks: string | null) {
       try {
         const mappedReeks = mapReeksToVolleyAdmin(currentReeks!);
         const volleyAdminData = await rangschikkingService.getRangschikkingFromVolleyAdmin(mappedReeks, "L-0759");
-        if (volleyAdminData?.rangschikking?.length > 0) {
+        if (volleyAdminData && volleyAdminData.rangschikking && volleyAdminData.rangschikking.length > 0) {
           if (!cancelled) setRangschikking(convertVolleyAdminToRangschikking(volleyAdminData.rangschikking));
           return;
         }
@@ -90,21 +92,25 @@ function useRangschikking(currentReeks: string | null) {
       if (mapReeksToVolleyAdmin(currentReeks!) !== currentReeks!) {
         try {
           const volleyAdminData = await rangschikkingService.getRangschikkingFromVolleyAdmin(currentReeks!, "L-0759");
-          if (volleyAdminData?.rangschikking?.length > 0) {
+          if (volleyAdminData && volleyAdminData.rangschikking && volleyAdminData.rangschikking.length > 0) {
             if (!cancelled) setRangschikking(convertVolleyAdminToRangschikking(volleyAdminData.rangschikking));
             return;
           }
         } catch {}
       }
       try {
-        const response = await rangschikkingService.getRangschikkingByReeks(currentReeks!, "L-0759");
-        if (response.success && response.data) {
-          if (!cancelled) setRangschikking(response.data);
+        const volleyAdminData = await rangschikkingService.getRangschikkingByReeks(currentReeks!, "L-0759");
+        if (!cancelled && volleyAdminData && volleyAdminData.rangschikking && volleyAdminData.rangschikking.length > 0) {
+          setRangschikking(convertVolleyAdminToRangschikking(volleyAdminData.rangschikking));
         }
       } catch {}
     }
     fetchRangschikking();
-    return () => { cancelled = true; };
+    const interval = setInterval(fetchRangschikking, 300000);
+    return () => { 
+      cancelled = true;
+      clearInterval(interval);
+    };
   }, [currentReeks]);
   return rangschikking;
 }

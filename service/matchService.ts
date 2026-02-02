@@ -32,12 +32,72 @@ const findReeksNaam = (reeks: string): string | undefined => {
   return found ? found[1] : undefined;
 };
 
+// Fallback regex parsing for matches
+const parseWedstrijdenRegex = (xmlString: string): any[] => {
+  const wedstrijden: any[] = [];
+  const parts = xmlString.split('<wedstrijd>'); 
+
+  for (let i = 1; i < parts.length; i++) {
+    const part = parts[i];
+    const endIndex = part.indexOf('</wedstrijd>');
+    if (endIndex === -1) continue;
+
+    const block = part.substring(0, endIndex);
+    const getValue = (tag: string) => {
+       const startTag = `<${tag}>`;
+       const endTag = `</${tag}>`;
+       const s = block.indexOf(startTag);
+       const e = block.indexOf(endTag);
+       return (s !== -1 && e !== -1) ? block.substring(s + startTag.length, e).trim() : '';
+    };
+
+    const datum = getValue('datum');
+    const aanvangsuur = getValue('aanvangsuur');
+    const reeks = getValue('reeks');
+
+    let timestamp = 0, week = 0;
+    if (datum && aanvangsuur) {
+      try {
+        const [day, month, year] = datum.split('/');
+        const matchDate = new Date(`${year}-${month}-${day}T${aanvangsuur}`);
+        if (!isNaN(matchDate.getTime())) {
+          timestamp = Math.floor(matchDate.getTime() / 1000);
+          week = getWeekNumber(matchDate);
+        }
+      } catch (e) { /* ignore */ }
+    }
+
+    wedstrijden.push({
+      type: 'competitie',
+      datum,
+      aanvangsuur,
+      reeks,
+      reeksnaam: findReeksNaam(reeks),
+      thuisploeg: cleanTeamName(getValue('thuisploeg')),
+      bezoekersploeg: cleanTeamName(getValue('bezoekersploeg')),
+      uitslag: getValue('uitslag'),
+      stamnummer_thuisclub: getValue('stamnummer_thuisclub'),
+      stamnummer_bezoekersclub: getValue('stamnummer_bezoekersclub'),
+      week,
+      timestamp
+    });
+  }
+  return wedstrijden;
+};
+
 const parseWedstrijdenXML = (xmlString: string): any[] => {
   try {
+    if (typeof window === 'undefined' || !window.DOMParser) {
+       return parseWedstrijdenRegex(xmlString);
+    }
+
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(xmlString, 'text/xml');
     
-    if (xmlDoc.querySelector('parsererror')) return [];
+    // If DOMParser fails or returns error document
+    if (xmlDoc.querySelector('parsererror') || xmlDoc.querySelectorAll('wedstrijd').length === 0) {
+       return parseWedstrijdenRegex(xmlString);
+    }
     
     const wedstrijdElements = xmlDoc.querySelectorAll('wedstrijd');
     const wedstrijden: any[] = [];
@@ -80,31 +140,53 @@ const parseWedstrijdenXML = (xmlString: string): any[] => {
     
     return wedstrijden;
   } catch (error) {
-    console.error('XML parsing failed:', error);
-    return [];
+    console.error('XML parsing failed, using fallback:', error);
+    return parseWedstrijdenRegex(xmlString);
   }
 };
 
 const getWedstrijdenByStamnummer = async (stamnummer: string = 'L-0759') => {
   console.log('🏐 Retrieving match data for stamnummer:', stamnummer);
+  let xmlString = '';
+  
   try {
-    // Use our own internal API proxy to avoid CORS issues and reliance on public proxies like allorigins.win
-    // This calls pages/api/proxy-matches.ts which performs the server-side fetch
-    const proxyUrl = `/api/proxy-matches?stamnummer=${stamnummer}&timestamp=${new Date().getTime()}`;
-    
+    const proxyUrl = `/api/proxy-matches?stamnummer=${stamnummer}&timestamp=${Date.now()}`;
     const response = await fetch(proxyUrl, {
       method: "GET",
-      headers: { 
-        "Accept": "text/xml, application/xml, */*"
-      }
+      headers: { "Accept": "text/xml, application/xml, */*" }
     });
     
-    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-    
-    const xmlString = await response.text();
+    if (response.ok) {
+        xmlString = await response.text();
+    } else {
+        throw new Error(`Proxy status: ${response.status}`);
+    }
+  } catch (err) {
+    console.warn('Internal proxy failed, trying fallback:', err);
+    try {
+        const target = `https://www.volleyadmin2.be/services/wedstrijden_xml.php?stamnummer=${stamnummer}`;
+        const fallbackUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(target)}&timestamp=${Date.now()}`;
+        const res = await fetch(fallbackUrl);
+        if (res.ok) {
+            xmlString = await res.text();
+        }
+    } catch (e) {
+        console.error('Fallback fetch failed:', e);
+    }
+  }
+
+  if (!xmlString) {
+      return {
+          ok: false,
+          status: 500,
+          json: async () => ({ success: false, data: [], error: 'Failed to fetch matches' })
+      };
+  }
+  
+  try {
     let wedstrijden = parseWedstrijdenXML(xmlString);
     
-    // Filter by stamnummer (only matches where this club plays)
+    // Filter by stamnummer to ensure relevance
     wedstrijden = wedstrijden.filter(w => 
       w.stamnummer_thuisclub === stamnummer || w.stamnummer_bezoekersclub === stamnummer
     );
@@ -115,15 +197,21 @@ const getWedstrijdenByStamnummer = async (stamnummer: string = 'L-0759') => {
       json: async () => ({ success: true, data: wedstrijden })
     };
   } catch (error) {
-    console.error('Error fetching wedstrijden:', error);
+    console.error('Error processing wedstrijden:', error);
     return {
       ok: false,
       status: 500,
-      json: async () => ({ success: false, data: [], error: error instanceof Error ? error.message : 'Unknown error' })
+      json: async () => ({ 
+        success: false, 
+        data: [], 
+        error: error instanceof Error ? error.message : 'Unknown error' 
+      })
     };
   }
 }
 
-export default {
+const matchService = {
     getWedstrijdenByStamnummer,
 };
+
+export default matchService;
