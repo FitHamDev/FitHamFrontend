@@ -18,9 +18,9 @@ const isPlayingTeam = (teamName: string, home?: string, away?: string): boolean 
 const RangschikkingTable: React.FC<Props> = ({ rangschikking, thuisploeg, bezoekersploeg }) => {  
   const hasData = rangschikking && rangschikking.length > 0;
 
-  // Filter to show only 12 teams closest to Ham teams (or playing teams) when there are more than 12 teams
+  // Filter to show only 11 teams closest to Ham teams (or playing teams) when there are more than 11 teams
   const getDisplayedTeams = (teams: Rangschikking[]): Rangschikking[] => {
-    const DISPLAY_COUNT = 12;
+    const DISPLAY_COUNT = 11;
     if (teams.length <= DISPLAY_COUNT) return teams;
 
     // Prefer centering around Ham teams (isVCM)

@@ -49,7 +49,7 @@ const CarrouselMatchItem: React.FC<Props> = ({ wedstrijd, rangschikking }) => {
   return (
     <div className="relative min-h-screen w-full flex bg-white/70 overflow-hidden">
       {/* Centered series title (big, white) */}
-      <div className="absolute inset-x-0 top-6 z-50 flex justify-center pointer-events-none">
+      <div className="absolute inset-x-0 top-12 z-50 flex justify-center pointer-events-none">
         <h1 className="text-[2rem] md:text-[4rem] font-black text-white drop-shadow-[0_8px_8px_rgba(0,0,0,0.8)] tracking-wide uppercase text-center px-4 leading-[0.80]">
           {formatReeks(wedstrijd.reeksnaam, wedstrijd.reeks)}
         </h1>
