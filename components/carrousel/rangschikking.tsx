@@ -64,7 +64,7 @@ const RangschikkingTable: React.FC<Props> = ({ rangschikking, thuisploeg, bezoek
           return (
             <div 
               key={team.volgorde} 
-              className={`flex items-center justify-between py-3 px-6 rounded-lg shadow-md text-blue-900 font-bold ${
+              className={`transition-none duration-0 flex items-center justify-between py-3 px-6 rounded-lg shadow-md text-blue-900 font-bold ${
                 isHighlighted ? 'bg-yellow-400 scale-105 z-10' : 'bg-white/90'
               }`}
             >

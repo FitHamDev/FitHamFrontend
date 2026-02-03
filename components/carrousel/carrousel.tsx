@@ -58,21 +58,26 @@ function useSortedWedstrijden() {
   return wedstrijden;
 }
 
-function useRangschikking(currentReeks: string | null) {
-  const [rangschikking, setRangschikking] = useState<Rangschikking[]>([]);
+function useRankingsCache(wedstrijden: Wedstrijd[]) {
+  const [cache, setCache] = useState<Record<string, Rangschikking[]>>({});
+
   useEffect(() => {
-    if (!currentReeks) return;
-    let cancelled = false;
-    async function fetchRangschikking() {
-      // Map reeks codes for VolleyAdmin
-      const mapReeksToVolleyAdmin = (reeks: string): string => {
+    if (wedstrijden.length === 0) return;
+
+    // Get unique reeks codes
+    const uniqueReeks = Array.from(new Set(wedstrijden.map(w => w.reeks).filter(Boolean)));
+    
+    // Helper to fetch a single reeks
+    const fetchReeksDada = async (reeks: string): Promise<Rangschikking[]> => {
+      const mapReeksToVolleyAdmin = (r: string): string => {
         const mapping: Record<string, string> = {
           'VDP2-B': 'LDM1',
           'VDP4-B': 'LDM2',
         };
-        return mapping[reeks] || reeks;
+        return mapping[r] || r;
       };
-      const convertVolleyAdminToRangschikking = (data: VolleyAdminRangschikking[]): Rangschikking[] =>
+      
+      const convertToRangschikking = (data: VolleyAdminRangschikking[]): Rangschikking[] =>
         data.map(team => ({
           volgorde: team.volgorde,
           ploegnaam: team.ploegnaam.replace(/[+-]/g, ''),
@@ -80,48 +85,62 @@ function useRangschikking(currentReeks: string | null) {
           isVCM: team.ploegnaam.toLowerCase().includes('ham') ||
             team.ploegnaam.toLowerCase().includes('fit') 
         }));
+
       try {
-        const mappedReeks = mapReeksToVolleyAdmin(currentReeks!);
-        const volleyAdminData = await rangschikkingService.getRangschikkingFromVolleyAdmin(mappedReeks, "L-0759");
-        if (volleyAdminData && volleyAdminData.rangschikking && volleyAdminData.rangschikking.length > 0) {
-          if (!cancelled) setRangschikking(convertVolleyAdminToRangschikking(volleyAdminData.rangschikking));
-          return;
-        }
+        const mapped = mapReeksToVolleyAdmin(reeks);
+        const data = await rangschikkingService.getRangschikkingFromVolleyAdmin(mapped, "L-0759");
+        if (data?.rangschikking?.length) return convertToRangschikking(data.rangschikking);
       } catch {}
-      
-      if (mapReeksToVolleyAdmin(currentReeks!) !== currentReeks!) {
+
+      if (mapReeksToVolleyAdmin(reeks) !== reeks) {
         try {
-          const volleyAdminData = await rangschikkingService.getRangschikkingFromVolleyAdmin(currentReeks!, "L-0759");
-          if (volleyAdminData && volleyAdminData.rangschikking && volleyAdminData.rangschikking.length > 0) {
-            if (!cancelled) setRangschikking(convertVolleyAdminToRangschikking(volleyAdminData.rangschikking));
-            return;
-          }
+          const data = await rangschikkingService.getRangschikkingFromVolleyAdmin(reeks, "L-0759");
+           if (data?.rangschikking?.length) return convertToRangschikking(data.rangschikking);
         } catch {}
       }
+
       try {
-        const volleyAdminData = await rangschikkingService.getRangschikkingByReeks(currentReeks!, "L-0759");
-        if (!cancelled && volleyAdminData && volleyAdminData.rangschikking && volleyAdminData.rangschikking.length > 0) {
-          setRangschikking(convertVolleyAdminToRangschikking(volleyAdminData.rangschikking));
-        }
+        const data = await rangschikkingService.getRangschikkingByReeks(reeks, "L-0759");
+         if (data?.rangschikking?.length) return convertToRangschikking(data.rangschikking);
       } catch {}
-    }
-    fetchRangschikking();
-    const interval = setInterval(fetchRangschikking, 300000);
+      
+      return [];
+    };
+
+    let cancelled = false;
+
+    // Fetch all in parallel
+    const loadAll = async () => {
+      const results: Record<string, Rangschikking[]> = {};
+      await Promise.all(uniqueReeks.map(async (reeks) => {
+        const data = await fetchReeksDada(reeks);
+        if (data.length > 0) results[reeks] = data;
+      }));
+      
+      if (!cancelled) {
+        setCache(prev => ({ ...prev, ...results }));
+      }
+    };
+
+    loadAll();
+
+    // Refresh every 5 minutes
+    const interval = setInterval(loadAll, 300000);
     return () => { 
-      cancelled = true;
+      cancelled = true; 
       clearInterval(interval);
     };
-  }, [currentReeks]);
-  return rangschikking;
+  }, [wedstrijden]);
+
+  return cache;
 }
 
 const Carrousel: React.FC = () => {
   const { basePath } = useRouter();
   const sponsorImages = useSponsorImages(basePath);
   const wedstrijden = useSortedWedstrijden();
+  const rankingsCache = useRankingsCache(wedstrijden);
   const [carouselIndex, setCarouselIndex] = useState(0);
-  const [currentReeks, setCurrentReeks] = useState<string | null>(null);
-  const rangschikking = useRangschikking(currentReeks);
 
   // Compose carousel items (alternating match/sponsor)
   const carouselItems = useMemo(() => {
@@ -138,16 +157,6 @@ const Carrousel: React.FC = () => {
     }).filter(Boolean) as { type: string; data: any }[];
   }, [wedstrijden, sponsorImages]);
 
-  // Update current reeks when match changes
-  useEffect(() => {
-    if (carouselItems.length > 0 && carouselItems[carouselIndex]?.type === 'match') {
-      const match = carouselItems[carouselIndex].data as Wedstrijd;
-      if (match.reeks && match.reeks !== currentReeks) {
-        setCurrentReeks(match.reeks);
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [carouselIndex, carouselItems]);
 
   // Auto-advance carousel
   useEffect(() => {
@@ -170,7 +179,7 @@ const Carrousel: React.FC = () => {
           {carouselItems[carouselIndex].type === 'match' ? (
             <CarrouselMatchItem 
               wedstrijd={carouselItems[carouselIndex].data as Wedstrijd} 
-              rangschikking={rangschikking} 
+              rangschikking={rankingsCache[(carouselItems[carouselIndex].data as Wedstrijd).reeks]} 
             />
           ) : (
             <CarrouselSponsorItem 
