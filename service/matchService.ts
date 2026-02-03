@@ -148,10 +148,7 @@ const parseWedstrijdenXML = (xmlString: string): any[] => {
   }
 };
 
-const getWedstrijdenByStamnummer = async (stamnummer: string = 'L-0759') => {
-  console.log('🏐 Retrieving match data for stamnummer:', stamnummer);
-  let xmlString = '';
-  
+const fetchMatchesXML = async (stamnummer: string): Promise<string> => {
   try {
     const proxyUrl = `/api/proxy-matches?stamnummer=${stamnummer}&timestamp=${Date.now()}`;
     const response = await fetch(proxyUrl, {
@@ -160,47 +157,69 @@ const getWedstrijdenByStamnummer = async (stamnummer: string = 'L-0759') => {
     });
     
     if (response.ok) {
-        xmlString = await response.text();
-    } else {
-        throw new Error(`Proxy status: ${response.status}`);
+        return await response.text();
     }
   } catch (err) {
-    console.warn('Internal proxy failed, trying fallback:', err);
-    try {
-        const target = `https://www.volleyadmin2.be/services/wedstrijden_xml.php?stamnummer=${stamnummer}`;
-        const fallbackUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(target)}&timestamp=${Date.now()}`;
-        const res = await fetch(fallbackUrl);
-        if (res.ok) {
-            xmlString = await res.text();
-        }
-    } catch (e) {
-        console.error('Fallback fetch failed:', e);
-    }
+    console.warn(`Internal proxy failed for ${stamnummer}, trying fallback:`, err);
   }
 
-  if (!xmlString) {
-      return {
-          ok: false,
-          status: 500,
-          json: async () => ({ success: false, data: [], error: 'Failed to fetch matches' })
-      };
-  }
-  
   try {
-    let wedstrijden = parseWedstrijdenXML(xmlString);
+      const target = `https://www.volleyadmin2.be/services/wedstrijden_xml.php?stamnummer=${stamnummer}`;
+      const fallbackUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(target)}&timestamp=${Date.now()}`;
+      const res = await fetch(fallbackUrl);
+      if (res.ok) {
+          return await res.text();
+      }
+  } catch (e) {
+      console.error(`Fallback fetch failed for ${stamnummer}:`, e);
+  }
+  return '';
+};
+
+const getWedstrijdenByStamnummer = async (stamnummer: string = 'L-0759') => {
+  console.log('🏐 Retrieving match data for stamnummer:', stamnummer);
+  
+  try { // Fetch matches for the main stamnummer
+    const mainXML = await fetchMatchesXML(stamnummer);
+    let wedstrijden = mainXML ? parseWedstrijdenXML(mainXML) : [];
+
+    // Special case: If searching for our club (L-0759), also check Stalvoc (L-0715) 
+    // for combined teams (e.g. U15 playing under Stalvoc stamnummer)
+    if (stamnummer === 'L-0759') {
+       console.log('🏐 Checking Stalvoc (L-0715) for combined team matches...');
+       const stalvocXML = await fetchMatchesXML('L-0715');
+       if (stalvocXML) {
+          const stalvocMatches = parseWedstrijdenXML(stalvocXML);
+          wedstrijden = [...wedstrijden, ...stalvocMatches];
+       }
+    }
+
+    if (wedstrijden.length === 0) {
+        return {
+          ok: false,
+          status: 404,
+          json: async () => ({ success: false, data: [], error: 'No matches found' })
+        };
+    }
     
     // Filter by stamnummer to ensure relevance, or if team name implies it's us (for combined teams)
+    // This filter is CRITICAL to remove irrelevant Stalvoc matches
     wedstrijden = wedstrijden.filter(w => 
       w.stamnummer_thuisclub === stamnummer || 
       w.stamnummer_bezoekersclub === stamnummer ||
       w.thuisploeg.toLowerCase().includes('ham') ||
       w.bezoekersploeg.toLowerCase().includes('ham')
     );
+
+    // Deduplicate matches (in case a match appears in both lists)
+    const uniqueMatches = Array.from(new Map(wedstrijden.map(item => 
+      [`${item.datum}-${item.aanvangsuur}-${item.thuisploeg}-${item.bezoekersploeg}`, item]
+    )).values());
     
     return {
       ok: true,
       status: 200,
-      json: async () => ({ success: true, data: wedstrijden })
+      json: async () => ({ success: true, data: uniqueMatches })
     };
   } catch (error) {
     console.error('Error processing wedstrijden:', error);
