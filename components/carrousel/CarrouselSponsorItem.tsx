@@ -20,7 +20,7 @@ const CarrouselSponsorItem: React.FC<Props> = ({ images }) => {
         <img
           src={image}
           alt="Sponsor"
-          className="object-contain max-h-[60%] max-w-[80%] drop-shadow-lg"
+          className="object-contain h-[75%] w-[90%] drop-shadow-lg"
         />
       </div>
     </div>
