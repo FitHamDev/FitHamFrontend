@@ -1,6 +1,5 @@
 import React from "react";
 import { useRouter } from "next/router";
-import Image from "next/image";
 
 type Props = {
     images: string[];
@@ -18,15 +17,13 @@ const CarrouselSponsorItem: React.FC<Props> = ({ images }) => {
         style={{ backgroundImage: `url('${basePath}/carrousel_item_pattern.png')` }}
       ></div>
       <div className="absolute flex flex-col items-center justify-center h-full w-full z-50 text-center">
-        <div className="relative h-[75%] w-[90%]">
-          <Image
-            src={image}
-            alt="Sponsor"
-            fill
-            className="object-contain drop-shadow-lg"
-            priority
-          />
-        </div>
+        <img
+          src={image}
+          alt="Sponsor"
+          className="object-contain h-[75%] w-[90%] drop-shadow-lg"
+          loading="eager"
+          decoding="sync"
+        />
       </div>
     </div>
   );
