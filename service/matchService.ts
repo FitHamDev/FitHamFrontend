@@ -1,7 +1,10 @@
 // Team names mapping
 const reeksNamen: { [key: string]: string } = {
   "VDP2-B": "Dames A",
+  "LDM1": "Dames A",
   "VDP4-B": "Dames B",
+  "LDM2": "Dames B",
+  "LJU15N1R1": "U15J",
   "VJU19N2R1": "U19J",
   "VJU15N2R1-A": "U15J",
   "VJU11-3-3-N1R1": "U11J",
