@@ -189,9 +189,12 @@ const getWedstrijdenByStamnummer = async (stamnummer: string = 'L-0759') => {
   try {
     let wedstrijden = parseWedstrijdenXML(xmlString);
     
-    // Filter by stamnummer to ensure relevance
+    // Filter by stamnummer to ensure relevance, or if team name implies it's us (for combined teams)
     wedstrijden = wedstrijden.filter(w => 
-      w.stamnummer_thuisclub === stamnummer || w.stamnummer_bezoekersclub === stamnummer
+      w.stamnummer_thuisclub === stamnummer || 
+      w.stamnummer_bezoekersclub === stamnummer ||
+      w.thuisploeg.toLowerCase().includes('ham') ||
+      w.bezoekersploeg.toLowerCase().includes('ham')
     );
     
     return {
