@@ -22,7 +22,7 @@ const CarrouselMatchItem: React.FC<Props> = ({ wedstrijd, rangschikking }) => {
   const away = sanitize(wedstrijd.bezoekersploeg);
   const hasRang = Array.isArray(rangschikking) && rangschikking.length > 0;
 
-  // Map reeks codes (reeksnaam or reeks) to friendly display names
+  // Map reeks codes to friendly display names
   const formatReeks = (reeksnaam?: string | null, reeks?: string | null): string => {
     const raw = reeksnaam && reeksnaam.trim() !== "" ? reeksnaam.trim() : (reeks || "");
     if (!raw) return "";

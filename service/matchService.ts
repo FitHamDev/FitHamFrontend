@@ -177,16 +177,14 @@ const fetchMatchesXML = async (stamnummer: string): Promise<string> => {
 };
 
 const getWedstrijdenByStamnummer = async (stamnummer: string = 'L-0759') => {
-  console.log('🏐 Retrieving match data for stamnummer:', stamnummer);
   
   try { // Fetch matches for the main stamnummer
     const mainXML = await fetchMatchesXML(stamnummer);
     let wedstrijden = mainXML ? parseWedstrijdenXML(mainXML) : [];
 
-    // Special case: If searching for our club (L-0759), also check Stalvoc (L-0715) 
+    // Special case
     // for combined teams (e.g. U15 playing under Stalvoc stamnummer)
     if (stamnummer === 'L-0759') {
-       console.log('🏐 Checking Stalvoc (L-0715) for combined team matches...');
        const stalvocXML = await fetchMatchesXML('L-0715');
        if (stalvocXML) {
           const stalvocMatches = parseWedstrijdenXML(stalvocXML);
@@ -211,10 +209,13 @@ const getWedstrijdenByStamnummer = async (stamnummer: string = 'L-0759') => {
       w.bezoekersploeg.toLowerCase().includes('ham')
     );
 
-    // Deduplicate matches (in case a match appears in both lists)
-    const uniqueMatches = Array.from(new Map(wedstrijden.map(item => 
+    // Deduplicate matches
+    let uniqueMatches = Array.from(new Map(wedstrijden.map(item => 
       [`${item.datum}-${item.aanvangsuur}-${item.thuisploeg}-${item.bezoekersploeg}`, item]
     )).values());
+
+    // TEMP: Filter matchen op  x datum 
+    // uniqueMatches = uniqueMatches.filter(m => m.datum && m.datum.includes('07/02'));
     
     return {
       ok: true,

@@ -8,7 +8,6 @@ import matchService from "../../service/matchService";
 import rangschikkingService from "../../service/rangschikkingService";
 import { filterWedstrijdenThisWeek } from "../../utils/dateUtils";
 
-// --- Custom hooks for fetching and mapping logic ---
 function useSponsorImages(basePath: string) {
   const [images, setImages] = useState<string[]>([]);
 
@@ -83,28 +82,40 @@ function useRankingsCache(wedstrijden: Wedstrijd[]) {
           ploegnaam: team.ploegnaam.replace(/[+-]/g, ''),
           puntentotaal: team.puntentotaal,
           isVCM: team.ploegnaam.toLowerCase().includes('ham') ||
-            team.ploegnaam.toLowerCase().includes('fit') 
+            team.ploegnaam.toLowerCase().includes('fit')
         }));
 
-      try {
-        const mapped = mapReeksToVolleyAdmin(reeks);
-        const data = await rangschikkingService.getRangschikkingFromVolleyAdmin(mapped, "L-0759");
-        if (data?.rangschikking?.length) return convertToRangschikking(data.rangschikking);
-      } catch {}
-
-      if (mapReeksToVolleyAdmin(reeks) !== reeks) {
+      const tryFetch = async (stamnummer: string): Promise<Rangschikking[] | null> => {
         try {
-          const data = await rangschikkingService.getRangschikkingFromVolleyAdmin(reeks, "L-0759");
+          const mapped = mapReeksToVolleyAdmin(reeks);
+          const data = await rangschikkingService.getRangschikkingFromVolleyAdmin(mapped, stamnummer);
+          if (data?.rangschikking?.length) return convertToRangschikking(data.rangschikking);
+        } catch {}
+  
+        if (mapReeksToVolleyAdmin(reeks) !== reeks) {
+          try {
+            const data = await rangschikkingService.getRangschikkingFromVolleyAdmin(reeks, stamnummer);
+             if (data?.rangschikking?.length) return convertToRangschikking(data.rangschikking);
+          } catch {}
+        }
+  
+        try {
+          const data = await rangschikkingService.getRangschikkingByReeks(reeks, stamnummer);
            if (data?.rangschikking?.length) return convertToRangschikking(data.rangschikking);
         } catch {}
-      }
 
-      try {
-        const data = await rangschikkingService.getRangschikkingByReeks(reeks, "L-0759");
-         if (data?.rangschikking?.length) return convertToRangschikking(data.rangschikking);
-      } catch {}
+        return null;
+      };
+
+      // Try fetching with default stamnummer first
+      let result = await tryFetch("L-0759");
       
-      return [];
+      // If no result, try fetching with Stalvoc's stamnummer
+      if (!result || result.length === 0) {
+        result = await tryFetch("L-0715");
+      }
+      
+      return result || [];
     };
 
     let cancelled = false;
