@@ -83,7 +83,7 @@ const theme = {
     /** Padding top for content (below the title bar) */
     contentPaddingTop: 'pt-28',
     /** Title bar distance from top */
-    titleTop: 'top-15',
+    titleTop: 'top-14',
     /** Yellow accent bar max-width */
     accentBarMaxWidth: 'max-w-[240px]',
 
