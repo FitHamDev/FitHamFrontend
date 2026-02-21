@@ -127,8 +127,8 @@ const theme = {
   // ── Text sizes (Tailwind arbitrary values) ─────────────────
   text: {
     /** Series title (mobile / desktop) */
-    titleMobile: 'text-[1.5rem]',
-    titleDesktop: 'md:text-[3rem]',
+    titleMobile: 'text-[1.75rem]',
+    titleDesktop: 'md:text-[3.25rem]',
     /** Team names in match card */
     teamNameMobile: 'text-[1.875rem]',
     teamNameDesktop: 'lg:text-[2.625rem]',
