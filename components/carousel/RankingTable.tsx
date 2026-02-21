@@ -62,7 +62,7 @@ const RankingTable: React.FC<Props> = ({ ranking, homeTeam, awayTeam, maxTeams }
         style={{ backgroundColor: c.tableHeaderBg }}
       >
         <div className={`col-span-1 text-center font-black ${t.tableHeader}`} style={{ color: c.tableHeaderText }}>#</div>
-        <div className={`col-span-8 text-left font-bold ${t.tableHeader}`} style={{ color: c.tableHeaderText }}>PLOEGEN</div>
+        <div className={`col-span-8 text-left font-black ${t.tableHeader}`} style={{ color: c.tableHeaderText }}>PLOEGEN</div>
         {showWinsColumn && (
           <div className={`col-span-1 text-center font-black ${t.tableHeader}`} style={{ color: c.tableHeaderText }}>#W</div>
         )}
@@ -84,18 +84,18 @@ const RankingTable: React.FC<Props> = ({ ranking, homeTeam, awayTeam, maxTeams }
                 : { backgroundColor: c.tableRowBg }
               }
             >
-              <span className={`col-span-1 text-center ${t.tableRowNumber} font-bold`} style={{ color: textColor }}>
+              <span className={`col-span-1 text-center ${t.tableRowNumber} font-black`} style={{ color: textColor }}>
                 {team.volgorde}
               </span>
-              <span className={`col-span-8 whitespace-normal break-words ${t.tableRowName} font-bold`} style={{ color: textColor }}>
+              <span className={`col-span-8 whitespace-normal break-words ${t.tableRowName} font-black`} style={{ color: textColor }}>
                 {team.ploegnaam}
               </span>
               {showWinsColumn && (
-                <span className={`col-span-1 text-center ${t.tableRowNumber} font-bold`} style={{ color: textColor }}>
+                <span className={`col-span-1 text-center ${t.tableRowNumber} font-black`} style={{ color: textColor }}>
                   {wins}
                 </span>
               )}
-              <span className={`col-span-2 text-center ${t.tableRowNumber} font-bold`} style={{ color: textColor }}>
+              <span className={`col-span-2 text-center ${t.tableRowNumber} font-black`} style={{ color: textColor }}>
                 {team.puntentotaal}
               </span>
             </div>
@@ -103,7 +103,7 @@ const RankingTable: React.FC<Props> = ({ ranking, homeTeam, awayTeam, maxTeams }
         })}
       </div>
       {ranking.length > displayedTeams.length && (
-        <p className={`${t.tableFooter} font-semibold drop-shadow-md text-center mt-3`} style={{ color: c.tableFooterText }}>
+        <p className={`${t.tableFooter} font-bold drop-shadow-md text-center mt-3`} style={{ color: c.tableFooterText }}>
           {displayedTeams.length} van {ranking.length} teams
         </p>
       )}
