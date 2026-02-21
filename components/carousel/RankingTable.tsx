@@ -58,7 +58,7 @@ const RankingTable: React.FC<Props> = ({ ranking, homeTeam, awayTeam, maxTeams }
     <div className="w-full">
       {/* Table header */}
       <div
-        className={`grid ${showWinsColumn ? 'grid-cols-12' : 'grid-cols-11'} gap-2 mb-2 ${l.tableRowPx} ${l.tableRowPy} ${l.tableRowRadius}`}
+        className={`grid ${showWinsColumn ? 'grid-cols-12' : 'grid-cols-11'} gap-2 mb-2 ${l.tableRowPx} ${l.tableRowPy} ${l.tableRowMinH} ${l.tableRowRadius}`}
         style={{ backgroundColor: c.tableHeaderBg }}
       >
         <div className={`col-span-1 text-center font-black ${t.tableHeader}`} style={{ color: c.tableHeaderText }}>#</div>
@@ -78,7 +78,7 @@ const RankingTable: React.FC<Props> = ({ ranking, homeTeam, awayTeam, maxTeams }
           return (
             <div 
               key={team.volgorde} 
-              className={`grid ${showWinsColumn ? 'grid-cols-12' : 'grid-cols-11'} gap-2 ${l.tableRowPy} ${l.tableRowPx} ${l.tableRowRadius} shadow-md items-center transition-all duration-200`}
+              className={`grid ${showWinsColumn ? 'grid-cols-12' : 'grid-cols-11'} gap-2 ${l.tableRowPy} ${l.tableRowPx} ${l.tableRowMinH} ${l.tableRowRadius} shadow-md items-center transition-all duration-200`}
               style={isHighlighted
                 ? { backgroundColor: c.tableHighlightBg, borderWidth: 2, borderColor: c.tableHighlightBorder }
                 : { backgroundColor: c.tableRowBg }
