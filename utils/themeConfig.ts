@@ -105,7 +105,7 @@ const theme = {
     /** Table row vertical padding */
     tableRowPy: 'py-6',
     /** Minimum height per table row */
-    tableRowMinH: 'min-h-[8rem]',
+    tableRowMinH: 'min-h-[2rem]',
     /** Table row border radius */
     tableRowRadius: 'rounded-lg',
 
@@ -119,7 +119,7 @@ const theme = {
     /** Pixels for the footer text */
     reserveFooter: 30,
     /** Approximate height of each table row in pixels */
-    rowHeight: 128,
+    rowHeight: 96,
     /** Minimum number of teams to always show */
     minTeams: 4,
   },
