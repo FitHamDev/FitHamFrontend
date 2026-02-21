@@ -83,7 +83,7 @@ const theme = {
     /** Padding top for content (below the title bar) */
     contentPaddingTop: 'pt-28',
     /** Title bar distance from top */
-    titleTop: 'top-14',
+    titleTop: 'top-16',
     /** Yellow accent bar max-width */
     accentBarMaxWidth: 'max-w-[240px]',
 
@@ -127,8 +127,8 @@ const theme = {
   // ── Text sizes (Tailwind arbitrary values) ─────────────────
   text: {
     /** Series title (mobile / desktop) */
-    titleMobile: 'text-[1.75rem]',
-    titleDesktop: 'md:text-[3.25rem]',
+    titleMobile: 'text-[2rem]',
+    titleDesktop: 'md:text-[3.5rem]',
     /** Team names in match card */
     teamNameMobile: 'text-[1.875rem]',
     teamNameDesktop: 'lg:text-[2.625rem]',
