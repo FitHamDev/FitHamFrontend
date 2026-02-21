@@ -1,6 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { Wedstrijd } from "../../../utils/types";
 
+/** Duration of the cross-fade transition in ms — keep in sync with Carousel.tsx */
+export const FADE_DURATION_MS = 600;
+
 export type CarouselItem =
   | { type: "match"; data: Wedstrijd }
   | { type: "sponsor"; data: string };
@@ -38,7 +41,7 @@ export function useAutoAdvanceCarousel(carouselItems: CarouselItem[]): number {
     if (carouselItems.length === 0) return;
 
     const currentItem = carouselItems[carouselIndex];
-    const delay = currentItem?.type === "sponsor" ? 5000 : 10000;
+    const delay = currentItem?.type === "sponsor" ? 7000 : 10000;
 
     const timeout = setTimeout(() => {
       setCarouselIndex((previous) => (previous + 1) % carouselItems.length);
