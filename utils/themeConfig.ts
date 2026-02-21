@@ -101,7 +101,7 @@ const theme = {
     /** Vertical space between table rows (Tailwind class) */
     tableRowSpacing: 'space-y-2',
     /** Table row horizontal padding */
-    tableRowPx: 'px-5',
+    tableRowPx: 'px-10',
     /** Table row vertical padding */
     tableRowPy: 'py-2.5',
     /** Table row border radius */
@@ -117,7 +117,7 @@ const theme = {
     /** Pixels for the footer text */
     reserveFooter: 30,
     /** Approximate height of each table row in pixels */
-    rowHeight: 48,
+    rowHeight: 72,
     /** Minimum number of teams to always show */
     minTeams: 4,
   },
@@ -138,11 +138,11 @@ const theme = {
     /** Time text */
     time: 'text-[1.875rem]',
     /** Rangschikking header */
-    tableHeader: 'text-lg',
+    tableHeader: 'text-2xl',
     /** Rangschikking row — position / wins / points */
-    tableRowNumber: 'text-xl',
+    tableRowNumber: 'text-2xl',
     /** Rangschikking row — team name */
-    tableRowName: 'text-lg',
+    tableRowName: 'text-2xl',
     /** Rangschikking footer */
     tableFooter: 'text-lg',
   },

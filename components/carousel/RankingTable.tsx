@@ -15,6 +15,7 @@ type Props = {
 const RankingTable: React.FC<Props> = ({ ranking, homeTeam, awayTeam, maxTeams }) => {
   const hasData = ranking && ranking.length > 0;
   const { colors: c, layout: l, text: t } = theme;
+  const showWinsColumn = false;
 
   // Filter to show teams closest to Ham teams, limited by maxTeams (screen-height aware)
   const getDisplayedTeams = (teams: Rangschikking[]): Rangschikking[] => {
@@ -57,12 +58,14 @@ const RankingTable: React.FC<Props> = ({ ranking, homeTeam, awayTeam, maxTeams }
     <div className="w-full">
       {/* Table header */}
       <div
-        className={`grid grid-cols-12 gap-3 mb-2 ${l.tableRowPx} ${l.tableRowPy} ${l.tableRowRadius}`}
+        className={`grid ${showWinsColumn ? 'grid-cols-12' : 'grid-cols-11'} gap-2 mb-2 ${l.tableRowPx} ${l.tableRowPy} ${l.tableRowRadius}`}
         style={{ backgroundColor: c.tableHeaderBg }}
       >
         <div className={`col-span-1 text-center font-black ${t.tableHeader}`} style={{ color: c.tableHeaderText }}>#</div>
         <div className={`col-span-8 text-left font-bold ${t.tableHeader}`} style={{ color: c.tableHeaderText }}>PLOEGEN</div>
-        <div className={`col-span-1 text-center font-black ${t.tableHeader}`} style={{ color: c.tableHeaderText }}>#W</div>
+        {showWinsColumn && (
+          <div className={`col-span-1 text-center font-black ${t.tableHeader}`} style={{ color: c.tableHeaderText }}>#W</div>
+        )}
         <div className={`col-span-2 text-center font-black ${t.tableHeader}`} style={{ color: c.tableHeaderText }}>PTN</div>
       </div>
       {/* Table rows */}
@@ -75,7 +78,7 @@ const RankingTable: React.FC<Props> = ({ ranking, homeTeam, awayTeam, maxTeams }
           return (
             <div 
               key={team.volgorde} 
-              className={`grid grid-cols-12 gap-3 ${l.tableRowPy} ${l.tableRowPx} ${l.tableRowRadius} shadow-md items-center transition-all duration-200`}
+              className={`grid ${showWinsColumn ? 'grid-cols-12' : 'grid-cols-11'} gap-2 ${l.tableRowPy} ${l.tableRowPx} ${l.tableRowRadius} shadow-md items-center transition-all duration-200`}
               style={isHighlighted
                 ? { backgroundColor: c.tableHighlightBg, borderWidth: 2, borderColor: c.tableHighlightBorder }
                 : { backgroundColor: c.tableRowBg }
@@ -87,9 +90,11 @@ const RankingTable: React.FC<Props> = ({ ranking, homeTeam, awayTeam, maxTeams }
               <span className={`col-span-8 whitespace-normal break-words ${t.tableRowName} font-semibold`} style={{ color: textColor }}>
                 {team.ploegnaam}
               </span>
-              <span className={`col-span-1 text-center ${t.tableRowNumber} font-bold`} style={{ color: textColor }}>
-                {wins}
-              </span>
+              {showWinsColumn && (
+                <span className={`col-span-1 text-center ${t.tableRowNumber} font-bold`} style={{ color: textColor }}>
+                  {wins}
+                </span>
+              )}
               <span className={`col-span-2 text-center ${t.tableRowNumber} font-bold`} style={{ color: textColor }}>
                 {team.puntentotaal}
               </span>
