@@ -1,3 +1,11 @@
+import { Wedstrijd } from '../utils/types';
+
+type ServiceResponse<T> = {
+  ok: boolean;
+  status: number;
+  json: () => Promise<{ success: boolean; data: T; error?: string }>;
+};
+
 // Team names mapping
 const reeksNamen: { [key: string]: string } = {
   "VDP2-B": "Dames A",
@@ -36,8 +44,8 @@ const findReeksNaam = (reeks: string): string | undefined => {
 };
 
 // Fallback regex parsing for matches
-const parseWedstrijdenRegex = (xmlString: string): any[] => {
-  const wedstrijden: any[] = [];
+const parseWedstrijdenRegex = (xmlString: string): Wedstrijd[] => {
+  const wedstrijden: Wedstrijd[] = [];
   const parts = xmlString.split('<wedstrijd>'); 
 
   for (let i = 1; i < parts.length; i++) {
@@ -88,7 +96,7 @@ const parseWedstrijdenRegex = (xmlString: string): any[] => {
   return wedstrijden;
 };
 
-const parseWedstrijdenXML = (xmlString: string): any[] => {
+const parseWedstrijdenXML = (xmlString: string): Wedstrijd[] => {
   try {
     if (typeof window === 'undefined' || !window.DOMParser) {
        return parseWedstrijdenRegex(xmlString);
@@ -103,7 +111,7 @@ const parseWedstrijdenXML = (xmlString: string): any[] => {
     }
     
     const wedstrijdElements = xmlDoc.querySelectorAll('wedstrijd');
-    const wedstrijden: any[] = [];
+    const wedstrijden: Wedstrijd[] = [];
     
     wedstrijdElements.forEach((element) => {
       const getValue = (tag: string) => element.querySelector(tag)?.textContent || '';
@@ -176,7 +184,10 @@ const fetchMatchesXML = async (stamnummer: string): Promise<string> => {
   return '';
 };
 
-const getWedstrijdenByStamnummer = async (stamnummer: string = 'L-0759') => {
+/**
+ * Fetches matches by club id (`stamnummer`) and returns a response-like object.
+ */
+const getWedstrijdenByStamnummer = async (stamnummer: string = 'L-0759'): Promise<ServiceResponse<Wedstrijd[]>> => {
   
   try { // Fetch matches for the main stamnummer
     const mainXML = await fetchMatchesXML(stamnummer);
@@ -234,10 +245,14 @@ const getWedstrijdenByStamnummer = async (stamnummer: string = 'L-0759') => {
       })
     };
   }
-}
+};
 
+/**
+ * Match service with Dutch legacy naming and English aliases.
+ */
 const matchService = {
-    getWedstrijdenByStamnummer,
+  getWedstrijdenByStamnummer,
+  getMatchesByClubId: getWedstrijdenByStamnummer,
 };
 
 export default matchService;

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import rangschikkingService from '../service/rangschikkingService';
-import Rangschikking from '../components/carrousel/rangschikking';
+import RankingTable from '../components/carousel/RankingTable';
 import { Rangschikking as RangschikkingType, VolleyAdminKlassement } from '../utils/types';
 
 const RangschikkingTestPage: React.FC = () => {
@@ -106,7 +106,7 @@ const RangschikkingTestPage: React.FC = () => {
             <h3 className="text-xl font-semibold mb-4">
               Ranking for {testReeks} ({rangschikkingData.length} teams)
             </h3>
-            <Rangschikking rankschikking={rangschikkingData} />
+            <RankingTable ranking={rangschikkingData} />
           </div>
         )}
       </section>

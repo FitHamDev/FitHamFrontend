@@ -1,5 +1,7 @@
+/** Supported match categories. */
 export type WedstrijdType = 'competitie' | 'recreatief';
 
+/** Internal match model used throughout the app. */
 export interface Wedstrijd {
   type: WedstrijdType;
   datum: string;
@@ -15,6 +17,7 @@ export interface Wedstrijd {
   timestamp: number;
 }
 
+/** Internal ranking row model used by the UI. */
 export interface Rangschikking {
   volgorde: string;
   ploegnaam: string;
@@ -22,6 +25,7 @@ export interface Rangschikking {
   isVCM: boolean;
 }
 
+/** Raw VolleyAdmin ranking row. */
 export interface VolleyAdminRangschikking {
   reeks: string;
   reeksid: string;
@@ -40,6 +44,14 @@ export interface VolleyAdminRangschikking {
   forfait: string;
 }
 
+/** VolleyAdmin ranking response model. */
 export interface VolleyAdminKlassement {
   rangschikking: VolleyAdminRangschikking[];
 }
+
+// English aliases for readability in newer code.
+export type MatchType = WedstrijdType;
+export type Match = Wedstrijd;
+export type Ranking = Rangschikking;
+export type VolleyAdminRanking = VolleyAdminRangschikking;
+export type VolleyAdminRankingResponse = VolleyAdminKlassement;

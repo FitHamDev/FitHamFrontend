@@ -1,5 +1,7 @@
 import { VolleyAdminKlassement, VolleyAdminRangschikking } from '../utils/types';
 
+const DEFAULT_CLUB_ID = 'L-0759';
+
 /**
  * Parses XML string using Regex as a fallback or for non-browser environments
  */
@@ -94,7 +96,7 @@ const parseXMLToObject = (xmlString: string): VolleyAdminKlassement => {
 /**
  * Fetches rankings for a given series using the internal API proxy.
  */
-const getRangschikkingByReeks = async (reeks: string, stamnummer: string = 'L-0759'): Promise<VolleyAdminKlassement | null> => {
+const getRangschikkingByReeks = async (reeks: string, stamnummer: string = DEFAULT_CLUB_ID): Promise<VolleyAdminKlassement | null> => {
   if (!reeks) return null;
 
   try {
@@ -124,11 +126,17 @@ const getRangschikkingByReeks = async (reeks: string, stamnummer: string = 'L-07
   }
 };
 
+/**
+ * English alias for `getRangschikkingByReeks`.
+ */
+const getRankingBySeries = getRangschikkingByReeks;
 
 
 const rangschikkingService = {
   getRangschikkingByReeks,
-  getRangschikkingFromVolleyAdmin: getRangschikkingByReeks 
+  getRangschikkingFromVolleyAdmin: getRangschikkingByReeks,
+  getRankingBySeries,
+  getRankingFromVolleyAdmin: getRankingBySeries,
 };
 
 export default rangschikkingService;
