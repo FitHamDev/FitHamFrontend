@@ -57,7 +57,7 @@ const RankingTable: React.FC<Props> = ({ ranking, homeTeam, awayTeam, maxTeams }
   return hasData ? (
     <div className="w-full">
       {/* Table header */}
-      <div
+      {/* <div
         className={`grid ${showWinsColumn ? 'grid-cols-12' : 'grid-cols-11'} gap-2 mb-2 ${l.tableRowPx} ${l.tableRowPy} ${l.tableRowMinH} ${l.tableRowRadius}`}
         style={{ backgroundColor: c.tableHeaderBg }}
       >
@@ -67,7 +67,7 @@ const RankingTable: React.FC<Props> = ({ ranking, homeTeam, awayTeam, maxTeams }
           <div className={`col-span-1 text-center font-black ${t.tableHeader}`} style={{ color: c.tableHeaderText }}>#W</div>
         )}
         <div className={`col-span-2 text-center font-black ${t.tableHeader}`} style={{ color: c.tableHeaderText }}>PTN</div>
-      </div>
+      </div> */}
       {/* Table rows */}
       <div className={l.tableRowSpacing}>
         {displayedTeams.map((team) => {
