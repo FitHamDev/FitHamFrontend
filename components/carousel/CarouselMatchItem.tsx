@@ -26,8 +26,8 @@ const CarouselMatchItem: React.FC<Props> = ({ match, ranking }) => {
   const hasRanking = Array.isArray(ranking) && ranking.length > 0;
   const contentContainerWidthClass = hasRanking ? l.maxContentWidth : l.singlePaneContentWidth;
   const matchCardSizeClass = hasRanking
-    ? 'w-[min(32rem,calc(100vh-18rem),100%)]'
-    : 'w-[min(32rem,calc(100vh-20rem),100%)]';
+    ? 'w-[min(36rem,calc(100vh-18rem),100%)]'
+    : 'w-[min(34rem,calc(100vh-20rem),100%)]';
   const titleText = formatReeksDisplayName(match.reeksnaam, match.reeks);
   const isBekerMatch = /(\bbvl\b|\bbek(?:er)?\b|\bcup\b)/i.test(`${match.reeks ?? ''} ${match.reeksnaam ?? ''}`);
   const showBekerSubtitle = isBekerMatch || !hasRanking;
@@ -49,7 +49,7 @@ const CarouselMatchItem: React.FC<Props> = ({ match, ranking }) => {
   return (
     <div className="relative min-h-screen w-full flex overflow-hidden" style={{ backgroundColor: g.top }}>
       {/* Centered series title with yellow accent bars */}
-      <div className={`absolute ${l.titleTop} left-1/2 -translate-x-1/2 z-50 pointer-events-none w-full ${contentContainerWidthClass} px-4 md:px-8 flex items-center justify-center gap-4`}>
+      <div className={`absolute ${l.titleTop} left-1/2 -translate-x-1/2 z-50 pointer-events-none w-full ${contentContainerWidthClass} px-2 md:px-4 flex items-center justify-center gap-4`}>
         <div className={`${l.accentBarHeightMobile} ${l.accentBarHeightDesktop} flex-1 min-w-[clamp(9rem,14vw,14rem)]`} style={{ backgroundColor: c.accent }}></div>
         <div className="flex flex-col items-center justify-center">
           <h1 className={`${t.titleMobile} ${t.titleDesktop} font-black text-white drop-shadow-[0_6px_6px_rgba(0,0,0,0.8)] tracking-wider uppercase text-center leading-none whitespace-nowrap`}>
@@ -72,7 +72,7 @@ const CarouselMatchItem: React.FC<Props> = ({ match, ranking }) => {
       
       {/* Content container */}
       <div className="relative z-50 w-full flex justify-center">
-        <div className={`w-full ${contentContainerWidthClass} mx-auto px-4 md:px-8 flex items-center justify-center ${l.matchRangGap}`}>
+        <div className={`w-full ${contentContainerWidthClass} mx-auto px-2 md:px-4 flex items-center justify-center ${l.matchRangGap}`}>
 
           {/* Match (left) */}
           <div className={`flex-shrink-0 ${hasRanking ? `${l.matchColumnWidth} w-full` : 'w-full'} flex flex-col items-center justify-center text-center p-6 ${l.contentPaddingTop}`}>
