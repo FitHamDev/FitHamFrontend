@@ -72,12 +72,12 @@ const CarouselMatchItem: React.FC<Props> = ({ match, ranking }) => {
       
       {/* Content container */}
       <div className="relative z-50 w-full flex justify-center">
-        <div className={`w-full ${contentContainerWidthClass} mx-auto px-2 md:px-4 flex items-center justify-center ${l.matchRangGap}`}>
+        <div className={`w-full ${contentContainerWidthClass} mx-auto px-0 md:px-0 flex items-center justify-center ${l.matchRangGap}`}>
 
           {/* Match (left) */}
           <div className={`flex-shrink-0 ${hasRanking ? `${l.matchColumnWidth} w-full` : 'w-full'} flex flex-col items-center justify-center text-center p-6 ${l.contentPaddingTop}`}>
             <div
-              className={`backdrop-blur-md pt-2 px-8 pb-2 rounded-xl shadow-2xl aspect-square flex flex-col justify-center overflow-hidden ${matchCardSizeClass}`}
+              className={`backdrop-blur-md pt-2 px-16 pb-2 rounded-xl shadow-2xl aspect-square flex flex-col justify-center overflow-hidden ${matchCardSizeClass}`}
               style={{ backgroundColor: c.matchCardBg, borderWidth: 1, borderColor: c.matchCardBorder }}
             >
               <h2 className={`${t.teamNameMobile} ${t.teamNameDesktop} text-white drop-shadow-[0_3px_3px_rgba(0,0,0,0.8)] mb-3 leading-tight flex flex-col gap-1`}>
