@@ -70,30 +70,24 @@ const theme = {
 
   // ── Layout — spacing & sizing ──────────────────────────────
   layout: {
-    /** Minimum horizontal margin on each side of the page (used in calc expressions) */
-    pageMinMarginX: '6rem',
-    /** Max width of the main content container (Tailwind class) — respects pageMinMarginX */
-    maxContentWidth: 'max-w-[calc(100vw-12rem)]',
+    /** Horizontal padding applied to the shared content wrapper (Tailwind class) */
+    contentPaddingX: 'px-16',
     /** Gap between match card and rangschikking table (Tailwind class) */
-    matchRangGap: 'gap-2',
-    /** Horizontal padding on the outer container (Tailwind class) */
-    outerPaddingX: 'px-1',
+    matchRangGap: 'gap-6',
     /** Match column width when rangschikking is present (Tailwind arbitrary) */
-    matchColumnWidth: 'md:w-[46%]',
+    matchColumnWidth: 'w-[44%]',
     /** Rangschikking column width (Tailwind arbitrary) */
-    rangColumnWidth: 'md:w-[54%]',
+    rangColumnWidth: 'w-[56%]',
     /** Padding top for content (below the title bar) */
     contentPaddingTop: 'pt-40',
     /** Title bar distance from top */
     titleTop: 'top-16',
-    /** Max width used when only one pane (match OR ranking) is visible */
-    singlePaneContentWidth: 'max-w-[calc(100vw-12rem)]',
 
     // ── Match card sizing (square: width = height) ──────────
-    /** Match card size when ranking table is present (square, constrained by vh & parent width) */
-    matchCardSize: 'size-[min(40rem,calc(100vh-18rem),100%)]',
-    /** Match card size when NO ranking table (square, constrained by vh & vw with margin) */
-    matchCardSizeSingle: 'size-[min(36rem,calc(100vh-20rem),calc(100vw-16rem))]',
+    /** Unified match card size — always the same look (square, capped by vh & vw) */
+    matchCardSize: 'size-[min(36rem,calc(100vh-20rem))]',
+    /** Minimum height so the card never collapses */
+    matchCardMinHeight: 'min-h-[28rem]',
     /** Yellow accent bar height on mobile */
     accentBarHeightMobile: 'h-10',
     /** Yellow accent bar height from md and up */

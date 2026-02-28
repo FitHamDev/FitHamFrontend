@@ -24,8 +24,7 @@ const CarouselMatchItem: React.FC<Props> = ({ match, ranking }) => {
   const awayTeam = sanitizeTeamName(match.bezoekersploeg);
   const { colors: c, gradient: g, layout: l, text: t } = theme;
   const hasRanking = Array.isArray(ranking) && ranking.length > 0;
-  const contentContainerWidthClass = hasRanking ? l.maxContentWidth : l.singlePaneContentWidth;
-  const matchCardSizeClass = hasRanking ? l.matchCardSize : l.matchCardSizeSingle;
+  const matchCardSizeClass = l.matchCardSize;
   const titleText = formatReeksDisplayName(match.reeksnaam, match.reeks);
   const isBekerMatch = /(\bbvl\b|\bbek(?:er)?\b|\bcup\b)/i.test(`${match.reeks ?? ''} ${match.reeksnaam ?? ''}`);
   const showBekerSubtitle = isBekerMatch || !hasRanking;
@@ -47,7 +46,7 @@ const CarouselMatchItem: React.FC<Props> = ({ match, ranking }) => {
   return (
     <div className="relative min-h-screen w-full flex overflow-hidden" style={{ backgroundColor: g.top }}>
       {/* Centered series title with yellow accent bars */}
-      <div className={`absolute ${l.titleTop} left-1/2 -translate-x-1/2 z-50 pointer-events-none w-full ${contentContainerWidthClass} px-0 flex items-center justify-center gap-4`}>
+      <div className={`absolute ${l.titleTop} left-1/2 -translate-x-1/2 z-50 pointer-events-none w-full ${l.contentPaddingX} flex items-center justify-center gap-4`}>
         <div className={`${l.accentBarHeightMobile} ${l.accentBarHeightDesktop} flex-1 min-w-[clamp(9rem,14vw,14rem)]`} style={{ backgroundColor: c.accent }}></div>
         <div className="flex flex-col items-center justify-center">
           <h1 className={`${t.titleMobile} ${t.titleDesktop} font-black text-white drop-shadow-[0_6px_6px_rgba(0,0,0,0.8)] tracking-wider uppercase text-center leading-none whitespace-nowrap`}>
@@ -70,12 +69,12 @@ const CarouselMatchItem: React.FC<Props> = ({ match, ranking }) => {
       
       {/* Content container */}
       <div className="relative z-50 w-full flex justify-center">
-        <div className={`w-full ${contentContainerWidthClass} mx-auto px-0 md:px-0 flex items-center justify-center ${l.matchRangGap}`}>
+        <div className={`w-full ${l.contentPaddingX} mx-auto flex items-center justify-center ${l.matchRangGap} ${l.contentPaddingTop}`}>
 
           {/* Match (left) */}
-          <div className={`flex-shrink-0 ${hasRanking ? `${l.matchColumnWidth} w-full` : 'w-full'} flex flex-col items-center justify-center text-center p-6 ${l.contentPaddingTop}`}>
+          <div className={`flex-shrink-0 ${hasRanking ? l.matchColumnWidth : 'w-full'} flex flex-col items-center justify-center text-center`}>
             <div
-              className={`backdrop-blur-md pt-2 px-16 pb-2 rounded-xl shadow-2xl flex flex-col justify-center overflow-hidden ${matchCardSizeClass}`}
+              className={`backdrop-blur-md pt-2 px-16 pb-2 rounded-xl shadow-2xl flex flex-col justify-center overflow-hidden ${matchCardSizeClass} ${l.matchCardMinHeight}`}
               style={{ backgroundColor: c.matchCardBg, borderWidth: 1, borderColor: c.matchCardBorder }}
             >
               <h2 className={`${t.teamNameMobile} ${t.teamNameDesktop} text-white drop-shadow-[0_3px_3px_rgba(0,0,0,0.8)] mb-3 leading-tight flex flex-col gap-1`}>
@@ -109,7 +108,7 @@ const CarouselMatchItem: React.FC<Props> = ({ match, ranking }) => {
 
           {/* Rangschikking (right) */}
           {hasRanking && (
-            <div className={`flex-shrink-0 ${l.rangColumnWidth} w-full flex items-center justify-center p-4 ${l.contentPaddingTop}`}>
+            <div className={`flex-shrink-0 ${l.rangColumnWidth} flex items-center justify-center`}>
               <div className="w-full">
                 <RankingTable 
                   ranking={ranking}
