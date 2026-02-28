@@ -81,11 +81,15 @@ const theme = {
     /** Rangschikking column width (Tailwind arbitrary) */
     rangColumnWidth: 'md:w-[58%]',
     /** Padding top for content (below the title bar) */
-    contentPaddingTop: 'pt-28',
+    contentPaddingTop: 'pt-40',
     /** Title bar distance from top */
     titleTop: 'top-16',
-    /** Yellow accent bar max-width */
-    accentBarMaxWidth: 'max-w-[240px]',
+    /** Max width used when only one pane (match OR ranking) is visible */
+    singlePaneContentWidth: 'max-w-4xl',
+    /** Yellow accent bar height on mobile */
+    accentBarHeightMobile: 'h-10',
+    /** Yellow accent bar height from md and up */
+    accentBarHeightDesktop: 'md:h-16',
 
     // ── Sponsor image sizing ────────────────────────────────
     /** Sponsor image width */
@@ -127,8 +131,8 @@ const theme = {
   // ── Text sizes (Tailwind arbitrary values) ─────────────────
   text: {
     /** Series title (mobile / desktop) */
-    titleMobile: 'text-[2rem]',
-    titleDesktop: 'md:text-[3.5rem]',
+    titleMobile: 'text-[3.4rem]',
+    titleDesktop: 'md:text-[6rem]',
     /** Team names in match card */
     teamNameMobile: 'text-[1.875rem]',
     teamNameDesktop: 'lg:text-[2.625rem]',

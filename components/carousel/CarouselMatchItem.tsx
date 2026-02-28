@@ -22,11 +22,9 @@ const CarouselMatchItem: React.FC<Props> = ({ match, ranking }) => {
   const { basePath } = useRouter();
   const homeTeam = sanitizeTeamName(match.thuisploeg);
   const awayTeam = sanitizeTeamName(match.bezoekersploeg);
-  const hasRanking = Array.isArray(ranking) && ranking.length > 0;
-  const noRankingScaleStyle = !hasRanking
-    ? { transform: 'scale(1.5)', transformOrigin: 'center top' as const }
-    : undefined;
   const { colors: c, gradient: g, layout: l, text: t } = theme;
+  const hasRanking = Array.isArray(ranking) && ranking.length > 0;
+  const contentContainerWidthClass = hasRanking ? l.maxContentWidth : l.singlePaneContentWidth;
 
   // Dynamically calculate how many teams fit based on screen height.
   const [maxTeams, setMaxTeams] = useState(11);
@@ -45,12 +43,12 @@ const CarouselMatchItem: React.FC<Props> = ({ match, ranking }) => {
   return (
     <div className="relative min-h-screen w-full flex overflow-hidden" style={{ backgroundColor: g.top }}>
       {/* Centered series title with yellow accent bars */}
-      <div className={`absolute inset-x-0 ${l.titleTop} z-50 flex justify-center items-center gap-4 pointer-events-none px-4`}>
-        <div className={`h-4 md:h-9 flex-1 ${l.accentBarMaxWidth}`} style={{ backgroundColor: c.accent }}></div>
-        <h1 className={`${t.titleMobile} ${t.titleDesktop} font-black text-white drop-shadow-[0_6px_6px_rgba(0,0,0,0.8)] tracking-wider uppercase text-center leading-[0.85] flex-shrink-0`}>
+      <div className={`absolute ${l.titleTop} left-1/2 -translate-x-1/2 z-50 pointer-events-none w-full ${contentContainerWidthClass} ${l.outerPaddingX} flex items-center justify-center gap-4`}>
+        <div className={`${l.accentBarHeightMobile} ${l.accentBarHeightDesktop} flex-1 min-w-[clamp(9rem,14vw,14rem)]`} style={{ backgroundColor: c.accent }}></div>
+        <h1 className={`${t.titleMobile} ${t.titleDesktop} font-black text-white drop-shadow-[0_6px_6px_rgba(0,0,0,0.8)] tracking-wider uppercase text-center leading-none whitespace-nowrap`}>
           {formatReeksDisplayName(match.reeksnaam, match.reeks)}
         </h1>
-        <div className={`h-4 md:h-9 flex-1 ${l.accentBarMaxWidth}`} style={{ backgroundColor: c.accent }}></div>
+        <div className={`${l.accentBarHeightMobile} ${l.accentBarHeightDesktop} flex-1 min-w-[clamp(9rem,14vw,14rem)]`} style={{ backgroundColor: c.accent }}></div>
       </div>
       {/* Gradient background */}
       <div className="absolute inset-0 z-0" style={{ background: `linear-gradient(to bottom, ${g.top}, ${g.bottom})` }}></div>
@@ -61,13 +59,13 @@ const CarouselMatchItem: React.FC<Props> = ({ match, ranking }) => {
       
       {/* Content container */}
       <div className="relative z-50 w-full flex justify-center">
-        <div className={`w-full ${l.maxContentWidth} flex items-center justify-center ${l.matchRangGap} ${l.outerPaddingX}`}>
+        <div className={`w-full ${contentContainerWidthClass} flex items-center justify-center ${l.matchRangGap} ${l.outerPaddingX}`}>
 
           {/* Match (left) */}
           <div className={`flex-shrink-0 ${hasRanking ? `${l.matchColumnWidth} w-full` : 'w-full'} flex flex-col items-center justify-center text-center p-6 ${l.contentPaddingTop}`}>
             <div
-              className="backdrop-blur-md p-6 rounded-xl shadow-2xl w-full max-w-lg"
-              style={{ ...noRankingScaleStyle, backgroundColor: c.matchCardBg, borderWidth: 1, borderColor: c.matchCardBorder }}
+              className={`backdrop-blur-md p-6 rounded-xl shadow-2xl w-full ${hasRanking ? 'max-w-lg' : ''}`}
+              style={{ backgroundColor: c.matchCardBg, borderWidth: 1, borderColor: c.matchCardBorder }}
             >
               <h2 className={`${t.teamNameMobile} ${t.teamNameDesktop} font-black text-white drop-shadow-[0_3px_3px_rgba(0,0,0,0.8)] mb-3 leading-tight flex flex-col gap-1`}>
                 <span className="block leading-none">{homeTeam}</span>
