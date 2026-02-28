@@ -77,9 +77,9 @@ const theme = {
     /** Horizontal padding on the outer container (Tailwind class) */
     outerPaddingX: 'px-1',
     /** Match column width when rangschikking is present (Tailwind arbitrary) */
-    matchColumnWidth: 'md:w-[42%]',
+    matchColumnWidth: 'md:w-[46%]',
     /** Rangschikking column width (Tailwind arbitrary) */
-    rangColumnWidth: 'md:w-[58%]',
+    rangColumnWidth: 'md:w-[54%]',
     /** Padding top for content (below the title bar) */
     contentPaddingTop: 'pt-40',
     /** Title bar distance from top */

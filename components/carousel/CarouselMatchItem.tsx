@@ -26,8 +26,8 @@ const CarouselMatchItem: React.FC<Props> = ({ match, ranking }) => {
   const hasRanking = Array.isArray(ranking) && ranking.length > 0;
   const contentContainerWidthClass = hasRanking ? l.maxContentWidth : l.singlePaneContentWidth;
   const matchCardSizeClass = hasRanking
-    ? 'w-[min(36rem,calc(100vh-18rem),100%)]'
-    : 'w-[min(34rem,calc(100vh-20rem),100%)]';
+    ? 'w-[min(40rem,calc(100vh-18rem),100%)]'
+    : 'w-[min(36rem,calc(100vh-20rem),100%)]';
   const titleText = formatReeksDisplayName(match.reeksnaam, match.reeks);
   const isBekerMatch = /(\bbvl\b|\bbek(?:er)?\b|\bcup\b)/i.test(`${match.reeks ?? ''} ${match.reeksnaam ?? ''}`);
   const showBekerSubtitle = isBekerMatch || !hasRanking;
