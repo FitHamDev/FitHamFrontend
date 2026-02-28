@@ -71,7 +71,7 @@ const theme = {
   // ── Layout — spacing & sizing ──────────────────────────────
   layout: {
     /** Horizontal padding applied to the shared content wrapper (Tailwind class) */
-    contentPaddingX: 'px-32',
+    contentPaddingX: 'px-40',
     /** Gap between match card and rangschikking table (Tailwind class) */
     matchRangGap: 'gap-6',
     /** Match column width when rangschikking is present (Tailwind arbitrary) */
