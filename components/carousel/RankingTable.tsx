@@ -95,7 +95,7 @@ const RankingTable: React.FC<Props> = ({ ranking, homeTeam, awayTeam, maxTeams }
                   {wins}
                 </span>
               )}
-              <span className={`col-span-2 text-center ${t.tableRowNumber} font-black`} style={{ color: textColor }}>
+              <span className={`col-span-2 text-right pr-1 ${t.tableRowNumber} font-black`} style={{ color: textColor }}>
                 {team.puntentotaal}
               </span>
             </div>
