@@ -80,10 +80,10 @@ const CarouselMatchItem: React.FC<Props> = ({ match, ranking }) => {
               className={`backdrop-blur-md p-6 rounded-xl shadow-2xl aspect-square flex flex-col justify-center overflow-hidden ${matchCardSizeClass}`}
               style={{ backgroundColor: c.matchCardBg, borderWidth: 1, borderColor: c.matchCardBorder }}
             >
-              <h2 className={`${t.teamNameMobile} ${t.teamNameDesktop} font-black text-white drop-shadow-[0_3px_3px_rgba(0,0,0,0.8)] mb-3 leading-tight flex flex-col gap-1`}>
-                <span className="block leading-none">{homeTeam}</span>
+              <h2 className={`${t.teamNameMobile} ${t.teamNameDesktop} text-white drop-shadow-[0_3px_3px_rgba(0,0,0,0.8)] mb-3 leading-tight flex flex-col gap-1`}>
+                <span className="block leading-none font-extrabold">{homeTeam}</span>
                 <span className="text-[1.5rem] text-white font-bold opacity-90 leading-none py-1">-</span>
-                <span className="block leading-none">{awayTeam}</span>
+                <span className="block leading-none font-extrabold">{awayTeam}</span>
               </h2>
 
               <div
