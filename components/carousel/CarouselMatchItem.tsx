@@ -46,7 +46,7 @@ const CarouselMatchItem: React.FC<Props> = ({ match, ranking }) => {
   return (
     <div className="relative min-h-screen w-full flex overflow-hidden" style={{ backgroundColor: g.top }}>
       {/* Centered series title with yellow accent bars */}
-      <div className={`absolute ${l.titleTop} left-1/2 -translate-x-1/2 z-50 pointer-events-none w-full ${l.contentPaddingX} flex items-center justify-center gap-4`}>
+      <div className={`absolute ${l.titleTop} left-0 right-0 z-50 pointer-events-none w-full px-0 flex items-center justify-center gap-4`}>
         <div className={`${l.accentBarHeightMobile} ${l.accentBarHeightDesktop} flex-1 min-w-[clamp(9rem,14vw,14rem)]`} style={{ backgroundColor: c.accent }}></div>
         <div className="flex flex-col items-center justify-center">
           <h1 className={`${t.titleMobile} ${t.titleDesktop} font-black text-white drop-shadow-[0_6px_6px_rgba(0,0,0,0.8)] tracking-wider uppercase text-center leading-none whitespace-nowrap`}>
