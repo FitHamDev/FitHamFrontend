@@ -71,7 +71,7 @@ const theme = {
   // ── Layout — spacing & sizing ──────────────────────────────
   layout: {
     /** Max width of the main content container (Tailwind class) */
-    maxContentWidth: 'max-w-7xl',
+    maxContentWidth: 'max-w-[calc(100vw-2rem)]',
     /** Gap between match card and rangschikking table (Tailwind class) */
     matchRangGap: 'gap-3',
     /** Horizontal padding on the outer container (Tailwind class) */
@@ -85,7 +85,7 @@ const theme = {
     /** Title bar distance from top */
     titleTop: 'top-16',
     /** Max width used when only one pane (match OR ranking) is visible */
-    singlePaneContentWidth: 'max-w-4xl',
+    singlePaneContentWidth: 'max-w-[calc(100vw-2rem)]',
     /** Yellow accent bar height on mobile */
     accentBarHeightMobile: 'h-10',
     /** Yellow accent bar height from md and up */
