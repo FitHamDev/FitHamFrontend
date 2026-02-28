@@ -71,13 +71,13 @@ const theme = {
   // ── Layout — spacing & sizing ──────────────────────────────
   layout: {
     /** Horizontal padding applied to the shared content wrapper (Tailwind class) */
-    contentPaddingX: 'px-16',
+    contentPaddingX: 'px-32',
     /** Gap between match card and rangschikking table (Tailwind class) */
     matchRangGap: 'gap-6',
     /** Match column width when rangschikking is present (Tailwind arbitrary) */
-    matchColumnWidth: 'w-[44%]',
+    matchColumnWidth: 'w-[46%]',
     /** Rangschikking column width (Tailwind arbitrary) */
-    rangColumnWidth: 'w-[56%]',
+    rangColumnWidth: 'w-[54%]',
     /** Padding top for content (below the title bar) */
     contentPaddingTop: 'pt-40',
     /** Title bar distance from top */
